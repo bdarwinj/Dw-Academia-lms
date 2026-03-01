@@ -58,6 +58,7 @@ class Plugin {
 			\AcademiaLms\Admin\Matriculas::init();
 			\AcademiaLms\Admin\Metaboxes\Leccion::init();
 			\AcademiaLms\Admin\Metaboxes\Cuestionario::init();
+			\AcademiaLms\Admin\SetupWizard\Wizard::init();
 		}
 
 		// Inicializar Frontend (Plantillas y Aula Virtual)
@@ -67,8 +68,18 @@ class Plugin {
 		// Integraciones (WooCommerce, etc.)
 		\AcademiaLms\Integrations\WooCommerce::init();
 
+		// Register hook to set the transient for the setup wizard
+		register_activation_hook( ACADEMIA_LMS_FILE, [ __CLASS__, 'activate_plugin' ] );
 		// Registrar Hook de Activación (Migraciones DB)
 		register_activation_hook( ACADEMIA_LMS_FILE, [ '\AcademiaLms\Database\Migrations', 'init' ] );
+	}
+
+	/**
+	 * Run on plugin activation.
+	 */
+	public static function activate_plugin() {
+		// Set transient to redirect to setup wizard on next admin load
+		set_transient( 'academia_lms_activation_redirect', true, 30 );
 	}
 
 	/**

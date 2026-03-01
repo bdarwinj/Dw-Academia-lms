@@ -21,7 +21,20 @@ class ComposerStaticInitcd8cdc80c6f414be6432532c5819b1df
     );
 
     public static $classMap = array (
+        'AcademiaLms\\API\\Base' => __DIR__ . '/../..' . '/includes/API/Base.php',
+        'AcademiaLms\\API\\Builder' => __DIR__ . '/../..' . '/includes/API/Builder.php',
+        'AcademiaLms\\Admin\\Matriculas' => __DIR__ . '/../..' . '/includes/Admin/Matriculas.php',
+        'AcademiaLms\\Admin\\Menu' => __DIR__ . '/../..' . '/includes/Admin/Menu.php',
+        'AcademiaLms\\Admin\\Metaboxes\\Cuestionario' => __DIR__ . '/../..' . '/includes/Admin/Metaboxes/Cuestionario.php',
+        'AcademiaLms\\Admin\\Metaboxes\\Leccion' => __DIR__ . '/../..' . '/includes/Admin/Metaboxes/Leccion.php',
         'AcademiaLms\\Core\\Plugin' => __DIR__ . '/../..' . '/includes/Core/Plugin.php',
+        'AcademiaLms\\Database\\Migrations' => __DIR__ . '/../..' . '/includes/Database/Migrations.php',
+        'AcademiaLms\\Frontend\\Shortcodes' => __DIR__ . '/../..' . '/includes/Frontend/Shortcodes.php',
+        'AcademiaLms\\Frontend\\TemplateLoader' => __DIR__ . '/../..' . '/includes/Frontend/TemplateLoader.php',
+        'AcademiaLms\\Integrations\\WooCommerce' => __DIR__ . '/../..' . '/includes/Integrations/WooCommerce.php',
+        'AcademiaLms\\PostTypes\\Cuestionarios' => __DIR__ . '/../..' . '/includes/PostTypes/Cuestionarios.php',
+        'AcademiaLms\\PostTypes\\Cursos' => __DIR__ . '/../..' . '/includes/PostTypes/Cursos.php',
+        'AcademiaLms\\PostTypes\\Lecciones' => __DIR__ . '/../..' . '/includes/PostTypes/Lecciones.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 

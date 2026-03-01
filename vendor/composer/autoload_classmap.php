@@ -6,6 +6,19 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AcademiaLms\\API\\Base' => $baseDir . '/includes/API/Base.php',
+    'AcademiaLms\\API\\Builder' => $baseDir . '/includes/API/Builder.php',
+    'AcademiaLms\\Admin\\Matriculas' => $baseDir . '/includes/Admin/Matriculas.php',
+    'AcademiaLms\\Admin\\Menu' => $baseDir . '/includes/Admin/Menu.php',
+    'AcademiaLms\\Admin\\Metaboxes\\Cuestionario' => $baseDir . '/includes/Admin/Metaboxes/Cuestionario.php',
+    'AcademiaLms\\Admin\\Metaboxes\\Leccion' => $baseDir . '/includes/Admin/Metaboxes/Leccion.php',
     'AcademiaLms\\Core\\Plugin' => $baseDir . '/includes/Core/Plugin.php',
+    'AcademiaLms\\Database\\Migrations' => $baseDir . '/includes/Database/Migrations.php',
+    'AcademiaLms\\Frontend\\Shortcodes' => $baseDir . '/includes/Frontend/Shortcodes.php',
+    'AcademiaLms\\Frontend\\TemplateLoader' => $baseDir . '/includes/Frontend/TemplateLoader.php',
+    'AcademiaLms\\Integrations\\WooCommerce' => $baseDir . '/includes/Integrations/WooCommerce.php',
+    'AcademiaLms\\PostTypes\\Cuestionarios' => $baseDir . '/includes/PostTypes/Cuestionarios.php',
+    'AcademiaLms\\PostTypes\\Cursos' => $baseDir . '/includes/PostTypes/Cursos.php',
+    'AcademiaLms\\PostTypes\\Lecciones' => $baseDir . '/includes/PostTypes/Lecciones.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
 );

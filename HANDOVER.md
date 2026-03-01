@@ -146,3 +146,19 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Cierre del Proyecto de Core MVP):
 - Revisar requerimientos de "Fase 5: Addons Pro" indicados en la planificación o decidir si se da por concluida la versión Base.
+
+---
+
+## [2026-03-01] - Asistente de Configuración (Setup Wizard)
+
+### Estado Actual:
+- **Fase:** Setup Wizard (Phase 6) - COMPLETADA
+- **Actividad:** Desarrollo de un asistente de configuración inicial interactivo para cuando el usuario active el plugin por primera vez, inspirado en flujos modernos tipo SaaS/WP Plugins.
+
+### Resumen de Cambios:
+1.  **Clase Wizard Core:** Implementada la lógica PHP que registra una página oculta de administración y captura el hook de activación del plugin para redirigir allí. Además almacena las preferencias como `update_option()`.
+2.  **Vistas por Pasos (Views):** Construidos 4 archivos HTML/PHP modulares: `welcome` (con la grilla de features), `business_type` (Individual vs Marketplace), `settings` (login, fuentes) y `roles` (permisos y registro).
+3.  **Diseño CSS Moderno:** Replicamos el estilo fluido, tipografía elegante y controles de "toggle switch" mostrados en las capturas de pantalla de referencia (`setup-wizard.css`). La cabecera incluye el rastreador de pasos (1, 2, 3...).
+
+### Tareas Pendientes Inmediatas:
+- Confirmar si se avanzará con integraciones de la "Fase 5: Addons Pro" (Certificados, Zoom) o se finalizará la iteración base.
