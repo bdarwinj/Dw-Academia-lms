@@ -97,5 +97,21 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 2.  **Grid de Cursos:** Implementada la plantilla HTML+CSS `templates/shortcodes/dashboard.php` que lista en un bloque grid los cursos (en esta fase con datos dummy demostrativos) mostrando su título, imagen, la barra de progreso de lecciones y el botón para reanudar el estudio, validando que el usuario tenga sesión iniciada.
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 3.3):
-- [ ] Desarrollar shortcodes para el Catálogo de Cursos `/cursos/`.
-- [ ] Listar cursos disponibles para el público.
+- [x] Desarrollar shortcodes para el Catálogo de Cursos `/cursos/`.
+- [x] Listar cursos disponibles para el público.
+
+---
+
+## [2026-03-01] - Catálogo de Cursos (Frontend)
+
+### Estado Actual:
+- **Fase:** Catálogo de Cursos (Phase 3.3) - COMPLETADA
+- **Actividad:** Creación del Shortcode para mostrar todos los cursos disponibles en la plataforma para captación de alumnos.
+
+### Resumen de Cambios:
+1.  **Shortcode de Catálogo (`[academia_cursos]`):** La clase `Shortcodes` fue actualizada para manejar este nuevo elemento. Utiliza `WP_Query` para buscar todos los Custom Post Types `academia_curso` que estén publicados.
+2.  **Plantilla Pública:** Se generó `templates/shortcodes/catalog.php` y su respectiva hoja de estilos dinámicos `catalog.css`. La interfaz muestra la imagen destacada del curso, el título, una descripción corta y un botón "Ver Detalles" invitando al registro o compra.
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 4.1):
+- [ ] Integración con WooCommerce.
+- [ ] Enlazar el flujo para que al comprar un producto de tipo Curso, el alumno quede matriculado.
