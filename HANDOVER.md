@@ -302,11 +302,12 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Acciones Realizadas:
 1.  **Layout Fullscreen:** Desarrollado `CourseEditor.jsx` con una barra superior persistente y navegación lateral interna (General, Curriculum, Ajustes). Este modo oculta el sidebar de la App para enfoque total.
 2.  **Integración de Builder:** El componente `CourseBuilder` (Drag & Drop) ha sido acoplado satisfactoriamente dentro de la pestaña de "Curriculum" del editor.
-3.  **Router Dinámico:** Configurado el enrutamiento para `/courses/new` y `/courses/edit/:id` permitiendo cargar este editor de forma independiente al AppShell estándar.
-4.  **Vinculación:** Actualizado el listado de cursos para que el botón "Crear Nuevo Curso" dispare esta nueva experiencia inmersiva.
+3.  **Limpieza de Consola:** Se añadieron hooks en `Menu.php` para hacer dequeue de scripts de WooCommerce (`wc-settings`, `wc-admin-app`, etc.) cuando se carga el panel de Academia LMS, eliminando los errores de JS externos en la consola.
+4.  **Actualización de Componentes:** Refactorizados `Courses.jsx`, `Students.jsx` e `Instructors.jsx` para integrar el nuevo sistema de llamadas a la API.
+5.  **Corrección de Importación (ReferenceError):** Se añadió el icono `Users` faltante en las importaciones de `Courses.jsx` provenientes de `lucide-react`, evitando que el renderizado se rompiera en Safari/Chrome. Todo fue compilado nuevamente con Vite.
 
 ### Git Backup:
-- **Hash/Commit:** Implementada Estructura Inmersiva del Creador de Cursos (Phase 9.1).
+- **Hash/Commit:** Fix de importación faltante (Users icon) en Courses.jsx y recompilación.Creador de Cursos (Phase 9.1).
 
 ---
 
