@@ -24,17 +24,62 @@ const initialData = {
     sectionOrder: ['section-1', 'section-2']
 };
 
-export default function CourseBuilder() {
-    const [data, setData] = useState(initialData);
+export default function CourseBuilder({ value, onChange }) {
+    const [data, setData] = useState(value || initialData);
+
+    // Sync from parent if value changes from null to populated
+    React.useEffect(() => {
+        if (value) {
+            setData(value);
+        }
+    }, [value]);
+
+    const updateData = (newData) => {
+        setData(newData);
+        if (onChange) {
+            onChange(newData);
+        }
+    };
 
     const onDragEnd = (result) => {
-        const { destination, source, type } = result;
+        const { destination, source, type, draggableId } = result;
         if (!destination) return;
         if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-        // TODO: Handle drag and drop logic here for Sections and Items
-        // For now we just mock the interface to prove the structure
-        console.log("Drag result:", result);
+        // Handle drag and drop logic here for Sections and Items
+        let newData = { ...data };
+
+        if (type === 'section') {
+            const newOrder = Array.from(data.sectionOrder);
+            newOrder.splice(source.index, 1);
+            newOrder.splice(destination.index, 0, draggableId);
+            newData.sectionOrder = newOrder;
+        } else if (type === 'item') {
+            const sourceSection = data.sections[source.droppableId];
+            const destSection = data.sections[destination.droppableId];
+
+            if (source.droppableId === destination.droppableId) {
+                const newItems = Array.from(sourceSection.items);
+                const [moved] = newItems.splice(source.index, 1);
+                newItems.splice(destination.index, 0, moved);
+                newData.sections = {
+                    ...data.sections,
+                    [sourceSection.id]: { ...sourceSection, items: newItems }
+                };
+            } else {
+                const sourceItems = Array.from(sourceSection.items);
+                const destItems = Array.from(destSection.items);
+                const [moved] = sourceItems.splice(source.index, 1);
+                destItems.splice(destination.index, 0, moved);
+                newData.sections = {
+                    ...data.sections,
+                    [sourceSection.id]: { ...sourceSection, items: sourceItems },
+                    [destSection.id]: { ...destSection, items: destItems }
+                };
+            }
+        }
+
+        updateData(newData);
     };
 
     return (

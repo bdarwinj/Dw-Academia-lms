@@ -331,6 +331,23 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Lógica de Guardado y Sincronización API (Phase 9.3)
+
+### Estado Actual:
+- **Actividad:** Conexión del `CourseEditor.jsx`  y `CourseBuilder.jsx` con el backend de WordPress para guardar y actualizar cursos.
+- **Fase:** Creador Híbrido Inmersivo (Phase 9) - COMPLETADA
+
+### Acciones Realizadas:
+1.  **Nuevos Endpoints REST (Backend):** Se ampliaron las rutas en `CourseController.php` permitiendo métodos `POST` (crear) y `PUT` (actualizar) en el endpoint `/academia-lms/v1/courses` y `/academia-lms/v1/courses/(?P<id>\d+)`.
+2.  **Carga y Creación (Frontend):** Se actualizó `CourseEditor.jsx` para extraer el parámetro `id` de la ruta de React (`/courses/edit/:id`). Si existe un ID, el editor hace fetch a la API para cargar la métrica y estatus del curso.
+3.  **Sincronización de Imagen:** Se añadió soporte para subir las imágenes `Thumbnail` al endpoint nativo de medios (`/wp/v2/media`) para obtener el ID de adjunto (`featured_media`) antes de guardar el curso.
+4.  **Builder D&D Controlado:** Se reescribió el estado de `CourseBuilder.jsx` pasándolo de estado "Uncontrolled" local a "Controlled" con `value` y `onChange`, permitiendo que el estado de "Curriculum" se levante hasta `CourseEditor.jsx` para ser guardado con un solo payload final.
+
+### Git Backup:
+- **Hash/Commit:** Lógica de Guardado (API Sync) Completa Subfase 9.3
+
+---
+
 ## [2026-03-01] - Ejecución Final Fase 8.2: Gestión Completa de Usuarios
 
 ### Estado Actual:

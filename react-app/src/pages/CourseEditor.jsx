@@ -9,14 +9,21 @@ import {
     CheckCircle,
     ArrowLeft,
     UploadCloud,
-    Image as ImageIcon
+    Image as ImageIcon,
+    Loader2
 } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import CourseBuilder from '../components/CourseBuilder/CourseBuilder';
+import { buildApiUrl } from '../utils/api';
 
 const CourseEditor = () => {
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('general');
+    const [loading, setLoading] = useState(!!id);
+    const [isSaving, setIsSaving] = useState(false);
 
     // Global Course State
     const [courseTitle, setCourseTitle] = useState('');
@@ -29,7 +36,11 @@ const CourseEditor = () => {
 
     // Thumbnail State
     const [thumbnailUrl, setThumbnailUrl] = useState(null);
+    const [thumbnailFile, setThumbnailFile] = useState(null);
     const fileInputRef = useRef(null);
+
+    // Builder State
+    const [builderData, setBuilderData] = useState(null);
 
     const tabs = [
         { id: 'general', label: 'Información General', icon: Layout },
@@ -51,6 +62,7 @@ const CourseEditor = () => {
         if (file && file.type.startsWith('image/')) {
             const url = URL.createObjectURL(file);
             setThumbnailUrl(url);
+            setThumbnailFile(file);
         }
     };
 
@@ -59,11 +71,123 @@ const CourseEditor = () => {
         if (file) {
             const url = URL.createObjectURL(file);
             setThumbnailUrl(url);
+            setThumbnailFile(file);
+        }
+    };
+
+    // --- Load Course Data ---
+    React.useEffect(() => {
+        if (!id) return;
+
+        const fetchCourse = async () => {
+            try {
+                const url = buildApiUrl(`academia-lms/v1/courses/${id}`);
+                const response = await fetch(url, { headers: { 'X-WP-Nonce': window.academiaLmsData.nonce } });
+                if (response.ok) {
+                    const data = await response.json();
+                    setCourseTitle(data.title || '');
+                    setDescription(data.description || '');
+                    setVideoUrl(data.videoUrl || '');
+                    setPrice(data.price || '0');
+                    setStatus(data.status || 'draft');
+                    setLevel(data.level || 'beginner');
+                    setSelectedCategories(data.categories || []);
+                    if (data.thumbnail) setThumbnailUrl(data.thumbnail);
+                    if (data.builder_data) setBuilderData(data.builder_data);
+                }
+            } catch (error) {
+                console.error("Error loading course:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCourse();
+    }, [id]);
+
+    // --- Save Course Logic ---
+    const handleSave = async () => {
+        if (!courseTitle.trim()) {
+            alert('El título del curso es requerido.');
+            return;
+        }
+
+        setIsSaving(true);
+        let featured_media = null;
+
+        // 1. Upload Thumbnail if changed
+        if (thumbnailFile) {
+            const formData = new FormData();
+            formData.append('file', thumbnailFile);
+            formData.append('title', `thumb_${thumbnailFile.name}`);
+            try {
+                const uploadRes = await fetch(window.academiaLmsData.root + 'wp/v2/media', {
+                    method: 'POST',
+                    headers: { 'X-WP-Nonce': window.academiaLmsData.nonce },
+                    body: formData
+                });
+                if (uploadRes.ok) {
+                    const mediaData = await uploadRes.json();
+                    featured_media = mediaData.id;
+                }
+            } catch (error) {
+                console.error("Error uploading thumbnail:", error);
+            }
+        }
+
+        // 2. Prepare payload
+        const payload = {
+            title: courseTitle,
+            description,
+            videoUrl,
+            price,
+            status,
+            level,
+            categories: selectedCategories,
+        };
+        if (featured_media) payload.featured_media = featured_media;
+        if (builderData) payload.builder_data = builderData;
+
+        // 3. Save or Update Course
+        try {
+            const endpoint = id ? `academia-lms/v1/courses/${id}` : `academia-lms/v1/courses`;
+            const method = id ? 'PUT' : 'POST';
+            const url = buildApiUrl(endpoint);
+
+            const response = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': window.academiaLmsData.nonce
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                const resData = await response.json();
+                alert(resData.message || (id ? 'Curso actualizado' : 'Curso creado'));
+                if (!id && resData.id) {
+                    navigate(`/courses/edit/${resData.id}`, { replace: true });
+                }
+            } else {
+                alert('Error al guardar el curso.');
+            }
+        } catch (error) {
+            console.error("Error saving course:", error);
+            alert('Error de conexión al guardar.');
+        } finally {
+            setIsSaving(false);
         }
     };
 
     return (
         <div className="course-editor-fullscreen">
+            {loading && (
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(255,255,255,0.7)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Loader2 className="spinner" size={40} color="#9333ea" />
+                    <style>{`.spinner { animation: spin 1s linear infinite; } @keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
+                </div>
+            )}
+
             {/* Top Bar Navigation */}
             <div className="editor-topbar">
                 <div className="editor-left">
@@ -83,11 +207,12 @@ const CourseEditor = () => {
                 </div>
 
                 <div className="editor-actions">
-                    <button className="btn-secondary">
+                    <button className="btn-secondary" disabled={isSaving}>
                         <Eye size={18} /> Previsualizar
                     </button>
-                    <button className="btn-primary">
-                        <Save size={18} /> Guardar Cambios
+                    <button className="btn-primary" onClick={handleSave} disabled={isSaving || loading}>
+                        {isSaving ? <Loader2 className="spinner" size={18} /> : <Save size={18} />}
+                        {isSaving ? 'Guardando...' : 'Guardar Cambios'}
                     </button>
                 </div>
             </div>
