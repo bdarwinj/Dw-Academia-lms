@@ -383,6 +383,25 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Motor de Sub-edición para Lecciones (Phase 12.3)
+
+### Estado Actual:
+- **Actividad:** Implementación del sistema de "Sub-vistas" para la edición aislada de lecciones individuales.
+- **Fase:** Advanced Builder UI (Phase 12) - EXECUCIÓN (Subfase 12.3)
+
+### Acciones Realizadas:
+1.  **Transición a Sub-vista:** Se añadió lógica en `CourseEditor.jsx` para alternar entre la vista del constructor general y un editor de lección específico mediante el estado `editingLesson`.
+2.  **Editor de Lección (Sub-view):** Se diseñó una interfaz a pantalla dividida (70/30) para la edición de lecciones:
+    - **Área Principal:** Edición de título y contenido enriquecido (ReactQuill).
+    - **Área Lateral:** Ajustes específicos como URL de video (condicional por tipo), previsualización y miniaturas.
+3.  **Sincronización de Datos en Tiempo Real:** Se implementó la función `updateLessonData` para que cualquier cambio realizado en la sub-vista se refleje instantáneamente en el objeto `builderData` del curso principal.
+4.  **UX de Navegación:** Se incluyó un botón de retorno ("Volver al Constructor") con iconos descriptivos y un botón de finalización, manteniendo al usuario orientado dentro del flujo de creación.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Subfase 12.3: Motor de Sub-edición y UI de Lección Individual.
+
+---
+
 ## [2026-03-01] - Constructor Avanzado y Modal de Contenido (Phase 12.2)
 
 ### Estado Actual:

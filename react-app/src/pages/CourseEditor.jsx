@@ -39,6 +39,7 @@ const CourseEditor = () => {
 
     // Builder State
     const [builderData, setBuilderData] = useState(null);
+    const [editingLesson, setEditingLesson] = useState(null); // { sectionId, itemId, type, title }
 
     const tabs = [
         { id: 'general', label: 'Información General', icon: Layout },
@@ -161,6 +162,24 @@ const CourseEditor = () => {
             alert('Error de conexión al guardar.');
         } finally {
             setIsSaving(false);
+        }
+    };
+
+    const handleEditLesson = (lesson) => {
+        setEditingLesson(lesson);
+    };
+
+    const closeLessonEditor = () => {
+        setEditingLesson(null);
+    };
+
+    const updateLessonData = (sectionId, itemId, field, value) => {
+        const newData = { ...builderData };
+        const section = newData.sections[sectionId];
+        const itemIndex = section.items.findIndex(i => i.id === itemId);
+        if (itemIndex > -1) {
+            section.items[itemIndex] = { ...section.items[itemIndex], [field]: value };
+            setBuilderData(newData);
         }
     };
 
@@ -304,7 +323,99 @@ const CourseEditor = () => {
 
                 {activeTab === 'builder' && (
                     <div className="builder-canvas-wrapper anim-fade-in">
-                        <CourseBuilder value={builderData} onChange={setBuilderData} />
+                        {!editingLesson ? (
+                            <CourseBuilder
+                                value={builderData}
+                                onChange={setBuilderData}
+                                onEditItem={handleEditLesson}
+                            />
+                        ) : (
+                            <div className="lesson-sub-view anim-fade-in">
+                                <header className="sub-view-header">
+                                    <button className="btn-back-builder" onClick={closeLessonEditor}>
+                                        <ArrowLeft size={18} /> Volver al Constructor
+                                    </button>
+                                    <div className="sub-view-title-info">
+                                        <span className="type-badge">{editingLesson.type.toUpperCase()}</span>
+                                        <h4>{editingLesson.title}</h4>
+                                    </div>
+                                    <button className="btn-primary-purple" onClick={closeLessonEditor}>
+                                        <CheckCircle size={18} /> Finalizar Edición
+                                    </button>
+                                </header>
+
+                                <div className="sub-view-grid">
+                                    <div className="sub-view-main">
+                                        <div className="pillar-block">
+                                            <label className="block-label">Título de la Lección</label>
+                                            <input
+                                                type="text"
+                                                className="pill-input-title"
+                                                value={editingLesson.title}
+                                                onChange={(e) => {
+                                                    const newTitle = e.target.value;
+                                                    setEditingLesson(prev => ({ ...prev, title: newTitle }));
+                                                    updateLessonData(editingLesson.sectionId, editingLesson.itemId, 'title', newTitle);
+                                                }}
+                                            />
+                                        </div>
+
+                                        <div className="pillar-block">
+                                            <label className="block-label">Contenido de la Lección</label>
+                                            <div className="quill-wrapper-advanced">
+                                                <ReactQuill
+                                                    theme="snow"
+                                                    value={editingLesson.content || ''}
+                                                    onChange={(content) => {
+                                                        setEditingLesson(prev => ({ ...prev, content }));
+                                                        updateLessonData(editingLesson.sectionId, editingLesson.itemId, 'content', content);
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <aside className="sub-view-sidebar">
+                                        {editingLesson.type === 'video' && (
+                                            <div className="sidebar-block">
+                                                <label className="block-label">URL del Video (YouTube/Vimeo)</label>
+                                                <input
+                                                    type="text"
+                                                    className="pillar-input-sm"
+                                                    placeholder="https://..."
+                                                    value={editingLesson.videoUrl || ''}
+                                                    onChange={(e) => {
+                                                        const url = e.target.value;
+                                                        setEditingLesson(prev => ({ ...prev, videoUrl: url }));
+                                                        updateLessonData(editingLesson.sectionId, editingLesson.itemId, 'videoUrl', url);
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
+
+                                        <div className="sidebar-block">
+                                            <label className="block-label">Ajustes de Lección</label>
+                                            <label className="stack-item">
+                                                <input type="checkbox" />
+                                                <span>Vista previa gratuita</span>
+                                            </label>
+                                            <label className="stack-item" style={{ marginTop: '0.5rem' }}>
+                                                <input type="checkbox" />
+                                                <span>Obligatoria para avanzar</span>
+                                            </label>
+                                        </div>
+
+                                        <div className="sidebar-block">
+                                            <label className="block-label">Miniatura de Lección</label>
+                                            <div className="dropzone-premium-sm">
+                                                <UploadCloud size={20} />
+                                                <span>Subir Imagen</span>
+                                            </div>
+                                        </div>
+                                    </aside>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -450,6 +561,20 @@ const CourseEditor = () => {
                 .input-group-duration { display: flex; align-items: center; gap: 1rem; color: #64748b; font-size: 13px; }
 
                 .builder-canvas-wrapper { max-width: 1000px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; }
+
+                /* Lesson Sub-view Styles */
+                .lesson-sub-view { display: flex; flex-direction: column; gap: 2rem; }
+                .sub-view-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; }
+                .btn-back-builder { background: none; border: none; color: #64748b; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: all 0.2s; }
+                .btn-back-builder:hover { color: #9333ea; }
+                .sub-view-title-info { text-align: center; }
+                .sub-view-title-info h4 { margin: 0; font-size: 1.25rem; font-weight: 800; color: #1e293b; }
+                .type-badge { font-size: 10px; font-weight: 800; color: #9333ea; background: #f3e8ff; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 0.25rem; }
+                
+                .sub-view-grid { display: grid; grid-template-columns: 1fr 300px; gap: 2rem; }
+                .sub-view-main { display: flex; flex-direction: column; gap: 1.5rem; }
+                .sub-view-sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+                .dropzone-premium-sm { height: 100px; border: 2px dashed #e2e8f0; border-radius: 10px; background: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: #94a3b8; font-size: 12px; font-weight: 600; cursor: pointer; }
 
                 .anim-fade-in { animation: fadeIn 0.3s ease; }
                 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }

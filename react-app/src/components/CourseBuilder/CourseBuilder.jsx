@@ -9,8 +9,7 @@ import {
     HelpCircle,
     Trash2,
     ChevronDown,
-    ChevronUp,
-    MoreVertical
+    ChevronUp
 } from 'lucide-react';
 import './CourseBuilder.css';
 
@@ -60,7 +59,7 @@ const ContentTypeModal = ({ isOpen, onClose, onSelect }) => {
     );
 };
 
-export default function CourseBuilder({ value, onChange }) {
+export default function CourseBuilder({ value, onChange, onEditItem }) {
     const [data, setData] = useState(value || initialData);
     const [expandedSections, setExpandedSections] = useState(['section-1']);
     const [modalConfig, setModalConfig] = useState({ isOpen: false, sectionId: null });
@@ -238,9 +237,18 @@ export default function CourseBuilder({ value, onChange }) {
                                                                                     <div className="item-info">
                                                                                         <span className="item-title">{item.title}</span>
                                                                                     </div>
-                                                                                    <button className="btn-icon-sm" onClick={() => handleDeleteItem(sectionId, item.id)}>
-                                                                                        <Trash2 size={14} />
-                                                                                    </button>
+                                                                                    <div className="item-actions">
+                                                                                        <button
+                                                                                            className="btn-icon-sm"
+                                                                                            onClick={() => onEditItem({ ...item, sectionId })}
+                                                                                            title="Editar Contenido"
+                                                                                        >
+                                                                                            <Plus size={14} style={{ transform: 'rotate(45deg)' }} />
+                                                                                        </button>
+                                                                                        <button className="btn-icon-sm" onClick={() => handleDeleteItem(sectionId, item.id)}>
+                                                                                            <Trash2 size={14} />
+                                                                                        </button>
+                                                                                    </div>
                                                                                 </div>
                                                                             )}
                                                                         </Draggable>
