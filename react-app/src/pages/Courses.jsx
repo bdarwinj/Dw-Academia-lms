@@ -12,6 +12,7 @@ import {
     Trash2,
     ExternalLink
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
@@ -59,13 +60,14 @@ const CourseList = () => {
                     <h1 style={{ fontSize: '1.75rem', fontWeight: 700, margin: 0 }}>Gestión de Cursos</h1>
                     <p style={{ color: '#64748b', marginTop: '0.5rem' }}>Administra y supervisa todos tus contenidos educativos.</p>
                 </div>
-                <button
+                <Link
+                    to="/courses/new"
                     className="academia-btn-primary"
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}
                 >
                     <Plus size={18} />
                     Crear Nuevo Curso
-                </button>
+                </Link>
             </div>
 
             {/* Filtros y Búsqueda */}

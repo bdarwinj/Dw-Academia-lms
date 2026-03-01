@@ -291,6 +291,24 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Git Backup:
 - **Hash/Commit:** Implementada Phase 8.2. Los paneles de Estudiantes y Profesores ahora son 100% SPA.
 
+---
+
+## [2026-03-01] - Ejecución Fase 9.1: Estructura del Creador Inmersivo
+
+### Estado Actual:
+- **Fase:** Creador Híbrido Inmersivo (Phase 9) - COMPLETADA SUBFASE 9.1
+- **Actividad:** Creación de la estructura base a pantalla completa para el editor de cursos.
+
+### Acciones Realizadas:
+1.  **Layout Fullscreen:** Desarrollado `CourseEditor.jsx` con una barra superior persistente y navegación lateral interna (General, Curriculum, Ajustes). Este modo oculta el sidebar de la App para enfoque total.
+2.  **Integración de Builder:** El componente `CourseBuilder` (Drag & Drop) ha sido acoplado satisfactoriamente dentro de la pestaña de "Curriculum" del editor.
+3.  **Router Dinámico:** Configurado el enrutamiento para `/courses/new` y `/courses/edit/:id` permitiendo cargar este editor de forma independiente al AppShell estándar.
+4.  **Vinculación:** Actualizado el listado de cursos para que el botón "Crear Nuevo Curso" dispare esta nueva experiencia inmersiva.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Estructura Inmersiva del Creador de Cursos (Phase 9.1).
+
+
 
 
 
