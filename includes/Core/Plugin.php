@@ -47,6 +47,7 @@ class Plugin {
 		\AcademiaLms\PostTypes\Cursos::init();
 		\AcademiaLms\PostTypes\Lecciones::init();
 		\AcademiaLms\PostTypes\Cuestionarios::init();
+		\AcademiaLms\Core\Blocks::init();
 
 		// Inicializar API REST Básico
 		\AcademiaLms\API\Base::init();

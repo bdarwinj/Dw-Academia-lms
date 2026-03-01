@@ -1,0 +1,90 @@
+/* CSS for blocks on the public frontend */
+.academia-hero {
+    position: relative;
+    padding: 120px 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    min-height: 500px;
+}
+
+.academia-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.4) 100%);
+    z-index: 1;
+}
+
+.academia-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+}
+
+.academia-hero-content h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #fff;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.academia-hero-content p {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.btn-premium-hero {
+    display: inline-block;
+    padding: 1.25rem 3rem;
+    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.125rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px -5px rgba(147, 51, 234, 0.4);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-premium-hero:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 30px -10px rgba(147, 51, 234, 0.5);
+    background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+}
+
+.academia-block-course-grid {
+    margin: 4rem 0;
+}
+
+/* Ensure the child catalog follows our block columns */
+.academia-block-course-grid .academia-course-grid {
+    display: grid !important;
+    gap: 2rem !important;
+    grid-template-columns: repeat(var(--grid-columns, 3), 1fr) !important;
+}
+
+@media (max-width: 1024px) {
+    .academia-block-course-grid .academia-course-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .academia-block-course-grid .academia-course-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

@@ -366,6 +366,23 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Librería de Bloques Gutenberg para Landings (Phase 11.1)
+
+### Estado Actual:
+- **Actividad:** Creación de componentes nativos de WordPress para el diseño de páginas de aterrizaje premium.
+- **Fase:** Bloques Propios de Landing (Phase 11) - COMPLETADA SUBFASE 11.1
+
+### Acciones Realizadas:
+1.  **Registro de Bloques (Backend):** Se creó la clase `Blocks.php` para registrar una nueva categoría "Academia LMS" en el editor Gutenberg y definir los bloques `hero` y `course-grid`.
+2.  **Bloque Hero (Visual):** Se desarrolló el componente JS para el editor que permite gestionar títulos, subtítulos e imágenes de fondo con una interfaz WYSIWYG. En el frontend, se renderiza con gradientes y tipografías premium.
+3.  **Grilla de Cursos Dinámica:** Se implementó un bloque que permite configurar visualmente el número de columnas y el límite de elementos, delegando el renderizado final a una función PHP para mantener la consistencia con el catálogo.
+4.  **Estilos Propios:** Se añadieron hojas de estilo separadas para el editor (`blocks-editor.css`) y el frontend (`blocks.css`), asegurando un diseño coherente y moderno.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Subfase 11.1 - Librería de Bloques de Landing
+
+---
+
 ## [2026-03-01] - Lógica de Guardado y Sincronización API (Phase 9.3)
 
 ### Estado Actual:

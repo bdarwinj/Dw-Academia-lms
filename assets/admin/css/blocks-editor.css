@@ -1,0 +1,60 @@
+/* CSS for blocks in the editor preview */
+.academia-hero-editor {
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    background-color: #f1f5f9;
+    padding: 80px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    border-radius: 20px;
+    border: 2px dashed #cbd5e1;
+}
+
+.academia-hero-editor h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 0;
+    color: #1e293b;
+}
+
+.academia-hero-editor p {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    color: #475569;
+}
+
+.hero-cta-preview {
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+    color: #fff;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    pointer-events: none;
+}
+
+.academia-block-placeholder {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+}
+
+.placeholder-icon {
+    margin-bottom: 0.5rem;
+}
+
+.placeholder-icon .dashicon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+}
