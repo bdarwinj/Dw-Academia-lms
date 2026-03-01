@@ -13,10 +13,11 @@ import {
     ExternalLink,
     Users
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { buildApiUrl } from '../utils/api';
 
 const CourseList = () => {
+    const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -37,6 +38,25 @@ const CourseList = () => {
             console.error("Error fetching courses:", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (!window.confirm("¿Seguro que deseas eliminar este curso? Esta acción no se puede deshacer.")) return;
+        try {
+            const url = buildApiUrl(`academia-lms/v1/courses/${id}`);
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: { 'X-WP-Nonce': window.academiaLmsData.nonce }
+            });
+            if (response.ok) {
+                fetchCourses();
+            } else {
+                alert("Error al eliminar el curso.");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Error de red al intentar eliminar.");
         }
     };
 
@@ -206,9 +226,28 @@ const CourseList = () => {
                                     </td>
                                     <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
                                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                                            <button className="academia-btn-icon" title="Ver Curso"><Eye size={16} /></button>
-                                            <button className="academia-btn-icon" title="Editar"><Edit size={16} /></button>
-                                            <button className="academia-btn-icon" title="Eliminar" style={{ color: '#ef4444' }}><Trash2 size={16} /></button>
+                                            <button
+                                                className="academia-btn-icon"
+                                                title="Ver Curso"
+                                                onClick={() => window.open(course.permalink, '_blank')}
+                                            >
+                                                <Eye size={16} />
+                                            </button>
+                                            <button
+                                                className="academia-btn-icon"
+                                                title="Editar"
+                                                onClick={() => navigate(`/courses/edit/${course.id}`)}
+                                            >
+                                                <Edit size={16} />
+                                            </button>
+                                            <button
+                                                className="academia-btn-icon"
+                                                title="Eliminar"
+                                                style={{ color: '#ef4444' }}
+                                                onClick={() => handleDelete(course.id)}
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

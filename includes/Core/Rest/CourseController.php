@@ -99,6 +99,7 @@ class CourseController extends WP_REST_Controller {
                     'price'       => $price,
                     'date'        => get_the_date('Y-m-d'),
                     'thumbnail'   => get_the_post_thumbnail_url($post_id, 'thumbnail') ?: '',
+                    'permalink'   => get_permalink($post_id)
                 ];
             }
             wp_reset_postdata();
