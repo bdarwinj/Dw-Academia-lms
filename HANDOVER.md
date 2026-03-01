@@ -33,5 +33,21 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 2.  **API REST de Curriculum:** Se diseñó el endpoint POST `/academia-lms/v1/builder/save` (`includes/API/Builder.php`) encargado de recibir el JSON del constructor y guardar la estructura como metadata (`_academia_builder_layout`) en WordPress de forma segura verificando permisos.
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 2.2):
-- [ ] Implementar la Gestión de Lecciones (Video HTML5/YouTube).
-- [ ] Sincronizar editor Gutenberg para el contenido de texto de cada Lección.
+- [x] Implementar la Gestión de Lecciones (Video HTML5/YouTube).
+- [x] Sincronizar editor Gutenberg para el contenido de texto de cada Lección.
+
+---
+
+## [2026-03-01] - Gestión de Lecciones (Video y Texto)
+
+### Estado Actual:
+- **Fase:** Gestión de Lecciones (Phase 2.2) - COMPLETADA
+- **Actividad:** Creación de Metaboxes en WordPress para asignar URLs de videos (YouTube/Vimeo) a las lecciones.
+
+### Resumen de Cambios:
+1.  **Metaboxes de Video:** Se implementó exitosamente la clase `AcademiaLms\Admin\Metaboxes\Leccion`. Ésta añade cajas personalizadas al Custom Post Type `academia_leccion` para seleccionar la fuente del video, proveer la URL y definir la duración del mismo, con validación de seguridad (Nonces) y saneamiento (`esc_url_raw`).
+2.  **Soporte Gutenberg:** Se confirmó y se está aprovechando la API REST nativa (`show_in_rest = true`) en los CPTs para que el instructor redacte la teoría de la lección usando la experiencia moderna de Gutenberg.
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 2.3):
+- [ ] Construir la estructura de datos (CPT o tablas) para el Motor de Cuestionarios.
+- [ ] Programar la interfaz para añadir Preguntas y Opciones al Cuestionario.

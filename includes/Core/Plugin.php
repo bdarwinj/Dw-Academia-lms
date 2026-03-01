@@ -55,6 +55,7 @@ class Plugin {
 		// Inicializar Panel de Administración
 		if ( is_admin() ) {
 			\AcademiaLms\Admin\Menu::init();
+			\AcademiaLms\Admin\Metaboxes\Leccion::init();
 		}
 
 		// Registrar Hook de Activación (Migraciones DB)
