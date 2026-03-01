@@ -42,6 +42,14 @@ class Plugin {
 	public function run() {
 		// Example: register text domain
 		add_action( 'plugins_loaded', [ $this, 'load_textdomain' ] );
+
+		// Inicializar Custom Post Types
+		\AcademiaLms\PostTypes\Cursos::init();
+		\AcademiaLms\PostTypes\Lecciones::init();
+		\AcademiaLms\PostTypes\Cuestionarios::init();
+
+		// Registrar Hook de Activación (Migraciones DB)
+		register_activation_hook( ACADEMIA_LMS_FILE, [ '\AcademiaLms\Database\Migrations', 'init' ] );
 	}
 
 	/**
