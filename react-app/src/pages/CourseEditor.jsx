@@ -473,13 +473,13 @@ const CourseEditor = () => {
                     <div className="settings-master-detail-layout anim-fade-in">
                         <aside className="settings-nav-master">
                             {[
-                                { id: 'pricing', label: 'Pricing' },
-                                { id: 'group_pricing', label: 'Group Pricing' },
+                                { id: 'pricing', label: 'Precios' },
+                                { id: 'group_pricing', label: 'Precios para Grupos' },
                                 { id: 'general', label: 'General' },
-                                { id: 'schedule', label: 'Schedule & Access' },
-                                { id: 'display', label: 'Display' },
-                                { id: 'content_drip', label: 'Content Drip' },
-                                { id: 'certificate', label: 'Certificate' },
+                                { id: 'schedule', label: 'Programación y Acceso' },
+                                { id: 'display', label: 'Visualización' },
+                                { id: 'content_drip', label: 'Goteo de Contenido' },
+                                { id: 'certificate', label: 'Certificado' },
                             ].map(tab => (
                                 <button
                                     key={tab.id}
@@ -496,22 +496,22 @@ const CourseEditor = () => {
                                 <div className="settings-tab-content anim-fade-in">
                                     <div className="settings-form-row">
                                         <div className="settings-col-label">
-                                            <span className="settings-label-title">Curriculum Visibility</span>
+                                            <span className="settings-label-title">Visibilidad del Plan de Estudios</span>
                                         </div>
                                         <div className="settings-col-input radio-row">
                                             <label className="radio-option">
                                                 <input type="radio" checked={settingsData.curriculumVisibility === 'always'} onChange={() => setSettingsData({ ...settingsData, curriculumVisibility: 'always' })} />
-                                                <span>Always Visible</span>
+                                                <span>Siempre Visible</span>
                                             </label>
                                             <label className="radio-option">
                                                 <input type="radio" checked={settingsData.curriculumVisibility === 'enrollers'} onChange={() => setSettingsData({ ...settingsData, curriculumVisibility: 'enrollers' })} />
-                                                <span>Only Visible to Enrollers</span>
+                                                <span>Solo Visible a Matriculados</span>
                                             </label>
                                         </div>
                                     </div>
 
                                     <div className="switch-container">
-                                        <div className="switch-label">Allow Reviews</div>
+                                        <div className="switch-label">Permitir Reseñas</div>
                                         <label className="switch">
                                             <input type="checkbox" checked={settingsData.allowReviews} onChange={(e) => setSettingsData({ ...settingsData, allowReviews: e.target.checked })} />
                                             <span className="slider"></span>
@@ -519,7 +519,7 @@ const CourseEditor = () => {
                                     </div>
 
                                     <div className="switch-container">
-                                        <div className="switch-label">Allow Reviews After Completion <HelpCircle size={14} color="#94a3b8" /></div>
+                                        <div className="switch-label">Permitir Reseñas después de Completar <HelpCircle size={14} color="#94a3b8" /></div>
                                         <label className="switch">
                                             <input type="checkbox" checked={settingsData.allowReviewsAfterCompletion} onChange={(e) => setSettingsData({ ...settingsData, allowReviewsAfterCompletion: e.target.checked })} />
                                             <span className="slider"></span>
@@ -527,7 +527,7 @@ const CourseEditor = () => {
                                     </div>
 
                                     <div className="switch-container">
-                                        <div className="switch-label">Welcome Message to Learner <HelpCircle size={14} color="#94a3b8" /></div>
+                                        <div className="switch-label">Mensaje de Bienvenida al Estudiante <HelpCircle size={14} color="#94a3b8" /></div>
                                         <label className="switch">
                                             <input type="checkbox" checked={settingsData.welcomeMessage} onChange={(e) => setSettingsData({ ...settingsData, welcomeMessage: e.target.checked })} />
                                             <span className="slider"></span>
@@ -540,24 +540,24 @@ const CourseEditor = () => {
                                 <div className="settings-tab-content anim-fade-in">
                                     <div className="settings-form-row-vertical">
                                         <div className="settings-col-label">
-                                            <span className="settings-label-title">Flow type:</span>
+                                            <span className="settings-label-title">Tipo de Flujo:</span>
                                         </div>
                                         <div className="settings-col-input radio-group">
                                             <label className="radio-option">
                                                 <input type="radio" name="drip" checked={settingsData.contentDripType === 'free'} onChange={() => setSettingsData({ ...settingsData, contentDripType: 'free' })} />
-                                                <span>Free <HelpCircle size={14} color="#94a3b8" /></span>
+                                                <span>Libre <HelpCircle size={14} color="#94a3b8" /></span>
                                             </label>
                                             <label className="radio-option">
                                                 <input type="radio" name="drip" checked={settingsData.contentDripType === 'sequential'} onChange={() => setSettingsData({ ...settingsData, contentDripType: 'sequential' })} />
-                                                <span>Sequential <HelpCircle size={14} color="#94a3b8" /></span>
+                                                <span>Secuencial <HelpCircle size={14} color="#94a3b8" /></span>
                                             </label>
-                                            <label className="radio-option disabled" title="Premium Feature">
+                                            <label className="radio-option disabled" title="Función Premium">
                                                 <input type="radio" name="drip" disabled />
-                                                <span>Date Selection 🔒</span>
+                                                <span>Selección de Fecha 🔒</span>
                                             </label>
-                                            <label className="radio-option disabled" title="Premium Feature">
+                                            <label className="radio-option disabled" title="Función Premium">
                                                 <input type="radio" name="drip" disabled />
-                                                <span>X Days From Enrollment 🔒</span>
+                                                <span>X Días de la Matriculación 🔒</span>
                                             </label>
                                         </div>
                                     </div>
@@ -567,7 +567,7 @@ const CourseEditor = () => {
                             {activeSettingsTab === 'certificate' && (
                                 <div className="settings-tab-content anim-fade-in">
                                     <div className="switch-container" style={{ borderBottom: 'none' }}>
-                                        <div className="switch-label">Enable Certificate <HelpCircle size={14} color="#94a3b8" /></div>
+                                        <div className="switch-label">Habilitar Certificado <HelpCircle size={14} color="#94a3b8" /></div>
                                         <label className="switch">
                                             <input type="checkbox" checked={settingsData.enableCertificate} onChange={(e) => setSettingsData({ ...settingsData, enableCertificate: e.target.checked })} />
                                             <span className="slider"></span>
