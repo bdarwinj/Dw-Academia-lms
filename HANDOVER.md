@@ -65,5 +65,21 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 2.  **Serialización JSON:** El instructor ahora puede dinámicamente añadir/quitar preguntas, escribir opciones A/B/C/D y elegir la correcta. El sistema de fondo procesa todo este array, lo serializa en JSON y lo guarda limpiamente en la metadata `_academia_quiz_questions` del cuestionario, validando el contenido.
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 3.1):
-- [ ] Construir la estructura `templates/` para sobre-escribir diseños del frontend.
-- [ ] Crear el Aula Virtual (Interfaz libre de distracciones con barra lateral asíncrona).
+- [x] Construir la estructura `templates/` para sobre-escribir diseños del frontend.
+- [x] Crear el Aula Virtual (Interfaz libre de distracciones con barra lateral asíncrona).
+
+---
+
+## [2026-03-01] - Inicio de Fase 3: Frontend y Aula Virtual
+
+### Estado Actual:
+- **Fase:** Experiencia del Estudiante (Phase 3.1) - COMPLETADA
+- **Actividad:** Creación del sistema de "Aula Virtual" reemplazando la plantilla original por una libre de distracciones con barra asíncrona preparada.
+
+### Resumen de Cambios:
+1.  **Template Loader:** Se creó la clase `AcademiaLms\Frontend\TemplateLoader` que engancha el filtro `template_include` para interceptar las visitas a las lecciones (o cursos en el futuro) y servir archivos `.php` ubicados en el plugin (`templates/`).
+2.  **HTML/CSS Libre de Distracciones:** Construida la plantilla base `templates/single-leccion/index.php`. Hemos descartado los headers del tema por defecto pero mantenidos `wp_head()` y `wp_footer()` para preservar la carga de plugins; asegurando un canvas limpio en pantalla completa (`learn-page.css`) para video en 16:9 y texto abajo, con una barra lateral izquierda asimilando a plataformas premium.
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 3.2):
+- [ ] Desarrollar el Dashboard del alumno y sus shortcodes.
+- [ ] Listado de cursos matriculados y en progreso.
