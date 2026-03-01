@@ -7,6 +7,7 @@ import StudentList from './pages/Students';
 import InstructorList from './pages/Instructors';
 import CourseEditor from './pages/CourseEditor';
 import Tools from './pages/Tools';
+import FormBuilder from './pages/FormBuilder';
 
 const App = () => {
     return (
@@ -28,6 +29,7 @@ const App = () => {
                             <Route path="/qa" element={<div>Consultas Q&A (En construcción)</div>} />
                             <Route path="/woocommerce" element={<div>Integración WooCommerce (En construcción)</div>} />
                             <Route path="/tools" element={<Tools />} />
+                            <Route path="/forms" element={<FormBuilder />} />
                             <Route path="/settings" element={<div>Ajustes (En construcción)</div>} />
                         </Routes>
                     </AppShell>

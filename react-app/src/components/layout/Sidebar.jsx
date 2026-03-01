@@ -21,6 +21,7 @@ const Sidebar = () => {
         { label: 'Exámenes', path: '/quizzes', icon: FileText },
         { label: 'Consultas (Q&A)', path: '/qa', icon: MessageSquare },
         { label: 'WooCommerce', path: '/woocommerce', icon: ShoppingBag },
+        { label: 'Formularios', path: '/forms', icon: FileText },
         { label: 'Herramientas', path: '/tools', icon: Wrench },
         { label: 'Ajustes', path: '/settings', icon: Settings },
     ];

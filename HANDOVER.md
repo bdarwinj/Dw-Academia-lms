@@ -347,6 +347,25 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Constructor de Formularios SPA Dinámico (Phase 10.2)
+
+### Estado Actual:
+- **Actividad:** Desarrollo de una herramienta visual para personalizar el formulario de registro de alumnos.
+- **Fase:** Herramientas y Formularios (Phase 10) - COMPLETADA SUBFASE 10.2
+
+### Acciones Realizadas:
+1.  **Persistencia de Configuración (Backend):** Se creó `SettingsController.php` para gestionar la lectura y escritura del esquema del formulario en la base de datos de WordPress (`wp_options`), permitiendo una estructura JSON flexible.
+2.  **Constructor Visual (Frontend - FormBuilder.jsx):**
+    - Se implementó un entorno de trabajo con **Drag & Drop** (usando `@hello-pangea/dnd`) para reordenar campos.
+    - Soporte para múltiples tipos de entrada: Texto, Email, Teléfono, Selección (Dropdown) y Checkbox.
+    - Interfaz para editar etiquetas (*Labels*), *Placeholders* y marcar campos como obligatorios.
+3.  **Integración de Navegación:** Se añadió el acceso directo a "Formularios" en la barra lateral oscura y se registró la ruta en el SPA principal.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Subfase 10.2 - Form Builder Dinámico (D&D)
+
+---
+
 ## [2026-03-01] - Lógica de Guardado y Sincronización API (Phase 9.3)
 
 ### Estado Actual:
