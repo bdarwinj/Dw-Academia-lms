@@ -383,6 +383,23 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Análisis y Planificación: Advanced Builder UI (Phase 12)
+
+### Estado Actual:
+- **Actividad:** Análisis competitivo de capturas provistas por el usuario (referencia: Masteriyo LMS).
+- **Fase:** Advanced Builder UI (Phase 12) - PLANIFICACIÓN
+
+### Acciones Realizadas:
+1.  **Revisión de Capturas:** Se analizaron 4 capturas de pantalla de la interfaz de creación de cursos de Masteriyo.
+2.  **Identificación de Paradigmas de UX:**
+    - Uso de pestañas horizontales (`Overview`, `Builder`, `Settings`) en lugar de barra lateral izquierda.
+    - Implementación de una barra lateral derecha contextual para metadatos (Categorías, Imagen destacada).
+    - Uso de un **Modal de Selección de Tipo de Contenido** al añadir ítems al constructor (Lección de Texto, Video, Quiz, etc.).
+    - Paradigma de **Sub-vista (Lesson Editor):** Al editar una lección específica, la UI transiciona a una vista dedicada, ocultando el constructor temporalmente.
+3.  **Plan de Implementación:** Se redactó `implementation_plan_advanced_builder.md` detallando los pasos para refactorizar `CourseEditor.jsx` y `CourseBuilder.jsx` para adoptar esta experiencia de usuario superior.
+
+---
+
 ## [2026-03-01] - Lógica de Guardado y Sincronización API (Phase 9.3)
 
 ### Estado Actual:
