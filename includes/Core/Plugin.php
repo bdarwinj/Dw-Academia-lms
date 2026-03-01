@@ -50,6 +50,7 @@ class Plugin {
 
 		// Inicializar API REST Básico
 		\AcademiaLms\API\Base::init();
+		\AcademiaLms\API\Builder::init();
 
 		// Inicializar Panel de Administración
 		if ( is_admin() ) {

@@ -17,8 +17,21 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 3.  **API REST Endpoint:** Se agregó el controlador base `AcademiaLms\API\Base` estableciendo el espacio de nombres de la API (`academia-lms/v1`) para permitir la comunicación segura asíncrona.
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 2.1):
-- [ ] Desarrollar los componentes en React para el *Course Builder* (Arrastrar y Soltar).
-- [ ] Modelar jerarquías entre Curso -> Sección -> Lección.
+- [x] Desarrollar los componentes en React para el *Course Builder* (Arrastrar y Soltar).
+- [x] Modelar jerarquías entre Curso -> Sección -> Lección.
 
 ---
-*Nota: Este archivo debe actualizarse al finalizar cada sesión de trabajo importante o cada vez que se complete una sub-fase del plan de implementación. no borrar lo que ya se tiene guardado, solo actualizarlo*
+
+## [2026-03-01] - Inicio de Fase 2: Constructor Visual (Course Builder)
+
+### Estado Actual:
+- **Fase:** Creación de Cursos y Constructor Visual (Phase 2.1) - COMPLETADA
+- **Actividad:** Creación de la interfaz Drag-and-Drop en el panel SPA y endpoints para guardar estructura del curso.
+
+### Resumen de Cambios:
+1.  **Componente React (Drag&Drop):** Se construyó el componente `CourseBuilder.jsx` utilizando `@hello-pangea/dnd` para lograr una experiencia fluida al organizar Secciones y Lecciones.
+2.  **API REST de Curriculum:** Se diseñó el endpoint POST `/academia-lms/v1/builder/save` (`includes/API/Builder.php`) encargado de recibir el JSON del constructor y guardar la estructura como metadata (`_academia_builder_layout`) en WordPress de forma segura verificando permisos.
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 2.2):
+- [ ] Implementar la Gestión de Lecciones (Video HTML5/YouTube).
+- [ ] Sincronizar editor Gutenberg para el contenido de texto de cada Lección.
