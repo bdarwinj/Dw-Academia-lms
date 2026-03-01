@@ -8,7 +8,8 @@ import {
     ArrowLeft,
     UploadCloud,
     Loader2,
-    CheckCircle
+    CheckCircle,
+    HelpCircle
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
