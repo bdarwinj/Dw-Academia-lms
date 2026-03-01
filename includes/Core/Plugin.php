@@ -61,6 +61,7 @@ class Plugin {
 
 		// Inicializar Frontend (Plantillas y Aula Virtual)
 		\AcademiaLms\Frontend\TemplateLoader::init();
+		\AcademiaLms\Frontend\Shortcodes::init();
 
 		// Registrar Hook de Activación (Migraciones DB)
 		register_activation_hook( ACADEMIA_LMS_FILE, [ '\AcademiaLms\Database\Migrations', 'init' ] );

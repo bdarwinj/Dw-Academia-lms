@@ -81,5 +81,21 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 2.  **HTML/CSS Libre de Distracciones:** Construida la plantilla base `templates/single-leccion/index.php`. Hemos descartado los headers del tema por defecto pero mantenidos `wp_head()` y `wp_footer()` para preservar la carga de plugins; asegurando un canvas limpio en pantalla completa (`learn-page.css`) para video en 16:9 y texto abajo, con una barra lateral izquierda asimilando a plataformas premium.
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 3.2):
-- [ ] Desarrollar el Dashboard del alumno y sus shortcodes.
-- [ ] Listado de cursos matriculados y en progreso.
+- [x] Desarrollar el Dashboard del alumno y sus shortcodes.
+- [x] Listado de cursos matriculados y en progreso.
+
+---
+
+## [2026-03-01] - Panel del Alumno (Dashboard Frontend)
+
+### Estado Actual:
+- **Fase:** Panel del Alumno (Phase 3.2) - COMPLETADA
+- **Actividad:** Desarrollo de *Shortcodes* para presentar la vista y el progreso del estudiante matriculado directamente en el sitio público.
+
+### Resumen de Cambios:
+1.  **Motor de Shortcodes:** Creada lógica `AcademiaLms\Frontend\Shortcodes` que habilita globalmente el "tag" `[academia_dashboard]`. Este puede ser incrustado en cualquier página de WordPress.
+2.  **Grid de Cursos:** Implementada la plantilla HTML+CSS `templates/shortcodes/dashboard.php` que lista en un bloque grid los cursos (en esta fase con datos dummy demostrativos) mostrando su título, imagen, la barra de progreso de lecciones y el botón para reanudar el estudio, validando que el usuario tenga sesión iniciada.
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 3.3):
+- [ ] Desarrollar shortcodes para el Catálogo de Cursos `/cursos/`.
+- [ ] Listar cursos disponibles para el público.
