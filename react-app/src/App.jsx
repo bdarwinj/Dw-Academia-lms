@@ -6,6 +6,7 @@ import CourseList from './pages/Courses';
 import StudentList from './pages/Students';
 import InstructorList from './pages/Instructors';
 import CourseEditor from './pages/CourseEditor';
+import Tools from './pages/Tools';
 
 const App = () => {
     return (
@@ -26,7 +27,7 @@ const App = () => {
                             <Route path="/quizzes" element={<div>Página de Exámenes (En construcción)</div>} />
                             <Route path="/qa" element={<div>Consultas Q&A (En construcción)</div>} />
                             <Route path="/woocommerce" element={<div>Integración WooCommerce (En construcción)</div>} />
-                            <Route path="/tools" element={<div>Herramientas (En construcción)</div>} />
+                            <Route path="/tools" element={<Tools />} />
                             <Route path="/settings" element={<div>Ajustes (En construcción)</div>} />
                         </Routes>
                     </AppShell>
