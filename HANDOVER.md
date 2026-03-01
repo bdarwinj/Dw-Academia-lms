@@ -383,6 +383,26 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Sincronización Avanzada Backend: Lecciones como CPT (Phase 12.4)
+
+### Estado Actual:
+- **Actividad:** Creación de endpoints REST dedicados para lecciones y sincronización completa con WordPress.
+- **Fase:** Advanced Builder UI (Phase 12) - COMPLETADA
+
+### Acciones Realizadas:
+1.  **`LessonController.php` (Backend):** Se creó un controlador REST completo con los siguientes endpoints:
+    - `GET /academia-lms/v1/lessons` — Lista lecciones, con filtrado por `course_id`.
+    - `POST /academia-lms/v1/lessons` — Crea un post `academia_leccion` individual.
+    - `GET/PUT/DELETE /academia-lms/v1/lessons/{id}` — CRUD para lecciones individuales.
+    - **`POST /academia-lms/v1/lessons/sync-course/{courseId}` — Sincronización masiva**: itera el `builder_data` del curso, y por cada lección crea o actualiza su post correspondiente en WordPress, guardando metadatos clave (`_academia_lesson_type`, `_academia_lesson_video_url`, `_academia_lesson_course_id`, `_academia_lesson_item_id`).
+2.  **Registro en `Plugin.php`:** Se registró el `LessonController` dentro del hook `rest_api_init`.
+3.  **Frontend (`CourseEditor.jsx`):** Tras guardar el curso exitosamente, el código ahora automáticamente llama al endpoint `/sync-course` para persistir todas las lecciones como posts de WordPress. La respuesta con los `wp_post_id` generados es guardada de vuelta en el `builderData` para futuras actualizaciones.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Subfase 12.4: Sincronización REST Avanzada y LessonController.
+
+---
+
 ## [2026-03-01] - Motor de Sub-edición para Lecciones (Phase 12.3)
 
 ### Estado Actual:

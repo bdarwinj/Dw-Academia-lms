@@ -58,6 +58,7 @@ class Plugin {
 			(new \AcademiaLms\Core\Rest\UserController())->register_routes();
 			(new \AcademiaLms\Core\Rest\ToolsController())->register_routes();
 			(new \AcademiaLms\Core\Rest\SettingsController())->register_routes();
+			(new \AcademiaLms\Core\Rest\LessonController())->register_routes();
 		});
 
 		// Inicializar Panel de Administración

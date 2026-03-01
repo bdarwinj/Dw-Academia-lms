@@ -150,6 +150,40 @@ const CourseEditor = () => {
 
             if (response.ok) {
                 const resData = await response.json();
+                const savedCourseId = id || resData.id;
+
+                // Step 3: Sync lessons to their own WP Posts (if builder data exists)
+                if (builderData && savedCourseId) {
+                    try {
+                        const syncUrl = buildApiUrl(`academia-lms/v1/lessons/sync-course/${savedCourseId}`);
+                        const syncRes = await fetch(syncUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-WP-Nonce': window.academiaLmsData.nonce
+                            },
+                            body: JSON.stringify({ builder_data: builderData })
+                        });
+
+                        if (syncRes.ok) {
+                            const syncData = await syncRes.json();
+                            // Update builder data with synced WP post IDs
+                            if (syncData.synced_ids && syncData.synced_ids.length > 0) {
+                                const updatedData = { ...builderData };
+                                syncData.synced_ids.forEach(({ item_id, wp_post_id }) => {
+                                    Object.values(updatedData.sections).forEach(section => {
+                                        const item = section.items.find(i => i.id === item_id);
+                                        if (item) item.wp_post_id = wp_post_id;
+                                    });
+                                });
+                                setBuilderData(updatedData);
+                            }
+                        }
+                    } catch (syncError) {
+                        console.error('Error syncing lessons:', syncError);
+                    }
+                }
+
                 alert(resData.message || (id ? 'Curso actualizado' : 'Curso creado'));
                 if (!id && resData.id) {
                     navigate(`/courses/edit/${resData.id}`, { replace: true });
