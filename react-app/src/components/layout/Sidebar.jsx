@@ -8,7 +8,7 @@ import {
     GraduationCap,
     FileText,
     MessageSquare,
-    Tool,
+    Wrench,
     ShoppingBag
 } from 'lucide-react';
 
@@ -21,7 +21,7 @@ const Sidebar = () => {
         { label: 'Exámenes', path: '/quizzes', icon: FileText },
         { label: 'Consultas (Q&A)', path: '/qa', icon: MessageSquare },
         { label: 'WooCommerce', path: '/woocommerce', icon: ShoppingBag },
-        { label: 'Herramientas', path: '/tools', icon: Tool },
+        { label: 'Herramientas', path: '/tools', icon: Wrench },
         { label: 'Ajustes', path: '/settings', icon: Settings },
     ];
 

@@ -38,7 +38,7 @@ const Dashboard = () => {
                 <StatCard label="Preguntas" value="0" icon={Users} color="#f59e0b" />
             </div>
 
-            <div className="academia-card" style={{ height: '300px', display: 'flex', alignItems: 'center', justifyCenter: 'center', color: '#94a3b8' }}>
+            <div className="academia-card" style={{ height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
                 <div style={{ textAlign: 'center', width: '100%' }}>
                     <BarChart2 size={48} style={{ margin: '0 auto 1rem', opacity: 0.3 }} />
                     <p>Aquí se mostrarán los gráficos de barras interactivos próximamente.</p>

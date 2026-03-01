@@ -205,3 +205,7 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Tareas Pendientes Inmediatas:
 - Desarrollar la **Fase 7.3: Datos Dinámicos** para que las tarjetas del dashboard reflejen datos reales de la base de datos vía REST API.
 - Iniciar la **Fase 8: DataGrids en React** para migrar el listado de cursos.
+
+### Git Backup:
+- **Hash/Commit:** Cambios recientes (Rebranding y Estructura SPA) han sido respaldados en Git con éxito.
+
