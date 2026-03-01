@@ -1,0 +1,30 @@
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/
+wp-content/languages/
+
+# Plugin Specific
+vendor/
+node_modules/
+react-app/node_modules/
+react-app/dist/
+
+# OS/IDEs
+.DS_Store
+.idea/
+.vscode/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build artifacts
+assets/admin/js/main.js
+assets/admin/css/main.css
+assets/admin/.vite/
