@@ -227,23 +227,31 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 - **Hash/Commit:** Fix aplicado y respaldado en Git. El árbol de trabajo está limpio y funcional.
 
 ### Tareas Pendientes Inmediatas:
-- Iniciar la **Fase 8: DataGrids en React** para migrar el listado de cursos.
+- Iniciar la **Fase 8.2: Gestión de Estudiantes e Instructores** en React.
 
 ---
 
-## [2026-03-01] - Ejecución Fase 7.3: Datos Dinámicos en el Dashboard
+## [2026-03-01] - Ejecución Fase 8.1: DataGrid de Cursos en React
 
 ### Estado Actual:
-- **Fase:** Rebranding y SPA Base (Phase 7) - COMPLETADA
-- **Actividad:** Conexión del Dashboard administrativo con datos reales del servidor mediante una nueva API REST.
+- **Fase:** DataGrids en React (Phase 8) - COMPLETADA SUBFASE 8.1
+- **Actividad:** Creación de la interfaz moderna para el listado de todos los cursos.
 
 ### Acciones Realizadas:
-1.  **StatsController (PHP):** Creado un nuevo controlador de API REST (`StatsController.php`) que consulta la base de datos para obtener el conteo de cursos, lecciones y matrículas activas.
-2.  **Dashboard (React):** Actualizado el componente `Dashboard.jsx` para realizar peticiones asíncronas (`fetch`) al cargar, mostrando estados de carga ("...") y refrescando los valores reales automáticamente.
-3.  **Seguridad:** Implementada validación de permisos (`manage_options`) y Nonce nativo de WordPress para proteger los datos de la academia.
+1.  **Backend (API & Taxonomías):** 
+    *   Registrada la taxonomía `academia_categoria` para organizar los cursos.
+    *   Creado `CourseController.php` con un endpoint dinámico que devuelve el título, autor, categorías, precios y alumnos matriculados por curso.
+2.  **Frontend (DataGrid):**
+    *   Desarrollado el componente `Courses.jsx` con un diseño de tabla premium.
+    *   Implementado sistema de pestañas de filtrado por estado (Todos, Publicados, Borradores, Papelera).
+    *   Añadida barra de búsqueda interactiva que se conecta con la API.
+3.  **UI/UX:**
+    *   Añadidos estados de carga y "Empty States" visuales cuando no hay cursos.
+    *   Refinados los estilos de botones y tablas en `admin.css`.
 
 ### Git Backup:
-- **Hash/Commit:** Implementada Phase 7.3 y respaldado en Git. El Dashboard ahora es 100% dinámico.
+- **Hash/Commit:** Implementada Subfase 8.1. El listado de cursos ahora es una SPA moderna y rápida.
+
 
 
 

@@ -12,6 +12,38 @@ class Cursos {
 	 */
 	public static function init() {
 		add_action( 'init', [ __CLASS__, 'registrar_post_type' ] );
+		add_action( 'init', [ __CLASS__, 'registrar_taxonomia' ] );
+	}
+
+	/**
+	 * Registrar Taxonomía de Categorías.
+	 */
+	public static function registrar_taxonomia() {
+		$labels = [
+			'name'              => _x( 'Categorías de Cursos', 'taxonomy general name', 'academia-lms' ),
+			'singular_name'     => _x( 'Categoría de Curso', 'taxonomy singular name', 'academia-lms' ),
+			'search_items'      => __( 'Buscar Categorías', 'academia-lms' ),
+			'all_items'         => __( 'Todas las Categorías', 'academia-lms' ),
+			'parent_item'       => __( 'Categoría Padre', 'academia-lms' ),
+			'parent_item_colon' => __( 'Categoría Padre:', 'academia-lms' ),
+			'edit_item'         => __( 'Editar Categoría', 'academia-lms' ),
+			'update_item'       => __( 'Actualizar Categoría', 'academia-lms' ),
+			'add_new_item'      => __( 'Añadir Nueva Categoría', 'academia-lms' ),
+			'new_item_name'     => __( 'Nombre de la Nueva Categoría', 'academia-lms' ),
+			'menu_name'         => __( 'Categorías', 'academia-lms' ),
+		];
+
+		$args = [
+			'hierarchical'      => true,
+			'labels'            => $labels,
+			'show_ui'           => true,
+			'show_admin_column' => true,
+			'query_var'         => true,
+			'rewrite'           => [ 'slug' => 'categoria-curso' ],
+			'show_in_rest'      => true,
+		];
+
+		register_taxonomy( 'academia_categoria', [ 'academia_curso' ], $args );
 	}
 
 	/**
