@@ -308,8 +308,25 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Git Backup:
 - **Hash/Commit:** Implementada Estructura Inmersiva del Creador de Cursos (Phase 9.1).
 
+---
 
+## [2026-03-01] - Ejecución Final Fase 8.2: Gestión Completa de Usuarios
 
+### Estado Actual:
+- **Fase:** DataGrids en React (Phase 8) - COMPLETADA SUBFASE 8.2
+- **Actividad:** Implementación de CRUD completo para Estudiantes y Profesores, gestión de matrículas y perfiles detallados.
 
+### Acciones Realizadas:
+1.  **Backend CRUD:** Desarrollado `UserController.php` con endpoints REST para:
+    - Crear usuarios (estudiantes y profesores) con validación de roles.
+    - Eliminar usuarios.
+    - Matricular/Desmatricular alumnos de cursos.
+    - Listar cursos por usuario con progreso y estado.
+2.  **Componentes UI Reutilizables:** Creados `Modal.jsx` y `SlideOver.jsx` para una experiencia fluida y moderna tipo SPA.
+3.  **Paneles Interactivos:**
+    - **Students.jsx:** Implementado botón para añadir alumnos, tabla con acciones de eliminación y visor de perfil detallado via SlideOver con lista de cursos.
+    - **Instructors.jsx:** Implementado sistema de invitación de profesores y vista de cursos asignados/creados.
+4.  **Refinado de API:** La recolección de estudiantes ahora unifica datos de la tabla de usuarios de WordPress y la tabla custom `academia_matriculas`.
 
-
+### Git Backup:
+- **Hash/Commit:** Finalizada Phase 8.2: CRUD y Gestión de Matrículas en React.

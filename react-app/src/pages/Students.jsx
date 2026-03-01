@@ -9,13 +9,33 @@ import {
     BookOpen,
     Edit,
     Trash2,
-    ExternalLink
+    ExternalLink,
+    AlertCircle,
+    CheckCircle2
 } from 'lucide-react';
+import Modal from '../components/common/Modal';
+import SlideOver from '../components/common/SlideOver';
 
 const StudentList = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
+
+    // UI State
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState(null);
+    const [studentCourses, setStudentCourses] = useState([]);
+    const [loadingCourses, setLoadingCourses] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Form State
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        username: '',
+        role: 'subscriber'
+    });
 
     const fetchStudents = async () => {
         setLoading(true);
@@ -43,6 +63,68 @@ const StudentList = () => {
         fetchStudents();
     };
 
+    const handleAddStudent = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-WP-Nonce': window.academiaLmsData.nonce
+                },
+                body: JSON.stringify(formData)
+            });
+            const result = await response.json();
+            if (response.ok) {
+                setIsAddModalOpen(false);
+                setFormData({ name: '', email: '', username: '', role: 'subscriber' });
+                fetchStudents();
+            } else {
+                alert(result.message || "Error al crear estudiante");
+            }
+        } catch (error) {
+            console.error("Error creating student:", error);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleDeleteStudent = async (id) => {
+        if (!confirm("¿Estás seguro de eliminar a este estudiante?")) return;
+
+        try {
+            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/users/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-WP-Nonce': window.academiaLmsData.nonce
+                }
+            });
+            if (response.ok) {
+                fetchStudents();
+            }
+        } catch (error) {
+            console.error("Error deleting student:", error);
+        }
+    };
+
+    const openProfile = async (student) => {
+        setSelectedStudent(student);
+        setIsProfileOpen(true);
+        setLoadingCourses(true);
+        try {
+            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/users/${student.id}/courses`, {
+                headers: { 'X-WP-Nonce': window.academiaLmsData.nonce }
+            });
+            const data = await response.json();
+            setStudentCourses(data);
+        } catch (error) {
+            console.error("Error fetching student courses:", error);
+        } finally {
+            setLoadingCourses(false);
+        }
+    };
+
     return (
         <div className="students-page">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
@@ -53,6 +135,7 @@ const StudentList = () => {
                 <button
                     className="academia-btn-primary"
                     style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                    onClick={() => setIsAddModalOpen(true)}
                 >
                     <Plus size={18} />
                     Añadir Nuevo Estudiante
@@ -156,9 +239,9 @@ const StudentList = () => {
                                     </td>
                                     <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
                                         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                                            <button className="academia-btn-icon" title="Editar"><Edit size={16} /></button>
-                                            <button className="academia-btn-icon" title="Ver Perfil"><ExternalLink size={16} /></button>
-                                            <button className="academia-btn-icon" title="Eliminar" style={{ color: '#ef4444' }}><Trash2 size={16} /></button>
+                                            <button className="academia-btn-icon" title="Editar" onClick={() => openProfile(student)}><Edit size={16} /></button>
+                                            <button className="academia-btn-icon" title="Ver Perfil" onClick={() => openProfile(student)}><ExternalLink size={16} /></button>
+                                            <button className="academia-btn-icon" title="Eliminar" style={{ color: '#ef4444' }} onClick={() => handleDeleteStudent(student.id)}><Trash2 size={16} /></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -167,6 +250,107 @@ const StudentList = () => {
                     </tbody>
                 </table>
             </div>
+
+            {/* Modal para Añadir Estudiante */}
+            <Modal
+                isOpen={isAddModalOpen}
+                onClose={() => setIsAddModalOpen(false)}
+                title="Añadir Nuevo Estudiante"
+                footer={(
+                    <>
+                        <button className="academia-btn-secondary" onClick={() => setIsAddModalOpen(false)}>Cancelar</button>
+                        <button
+                            className="academia-btn-primary"
+                            onClick={handleAddStudent}
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting ? 'Guardando...' : 'Crear Estudiante'}
+                        </button>
+                    </>
+                )}
+            >
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <div>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Nombre Completo</label>
+                        <input
+                            type="text"
+                            className="academia-input"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            placeholder="Ej: Juan Pérez"
+                        />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Nombre de Usuario</label>
+                        <input
+                            type="text"
+                            className="academia-input"
+                            value={formData.username}
+                            onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                            placeholder="Ej: juanperez123"
+                        />
+                    </div>
+                    <div>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 600 }}>Correo Electrónico</label>
+                        <input
+                            type="email"
+                            className="academia-input"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            placeholder="correo@ejemplo.com"
+                        />
+                    </div>
+                </div>
+            </Modal>
+
+            {/* SlideOver para Perfil de Estudiante */}
+            <SlideOver
+                isOpen={isProfileOpen}
+                onClose={() => setIsProfileOpen(false)}
+                title="Perfil del Estudiante"
+            >
+                {selectedStudent && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <img src={selectedStudent.avatar} alt="" style={{ width: '80px', height: '80px', borderRadius: '50%' }} />
+                            <div>
+                                <h4 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 700 }}>{selectedStudent.name}</h4>
+                                <span style={{ color: '#64748b' }}>{selectedStudent.email}</span>
+                            </div>
+                        </div>
+
+                        <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '1.5rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <h5 style={{ margin: 0, fontSize: '1rem', fontWeight: 600 }}>Cursos Inscritos</h5>
+                                <button className="academia-btn-secondary" style={{ fontSize: '0.75rem', padding: '0.4rem 0.8rem' }}>+ Inscribir</button>
+                            </div>
+
+                            {loadingCourses ? (
+                                <p style={{ color: '#94a3b8' }}>Cargando cursos...</p>
+                            ) : studentCourses.length === 0 ? (
+                                <div style={{ textAlign: 'center', padding: '2rem', background: '#f8fafc', borderRadius: '12px' }}>
+                                    <BookOpen size={32} style={{ color: '#e2e8f0', marginBottom: '0.5rem' }} />
+                                    <p style={{ margin: 0, color: '#64748b', fontSize: '0.875rem' }}>No tiene cursos inscritos.</p>
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                    {studentCourses.map(course => (
+                                        <div key={course.id} style={{ padding: '1rem', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <div>
+                                                <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{course.title}</div>
+                                                <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Progreso: {course.progress}%</div>
+                                            </div>
+                                            <span style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', borderRadius: '4px', background: '#dcfce7', color: '#166534' }}>
+                                                {course.status}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </SlideOver>
         </div>
     );
 };
