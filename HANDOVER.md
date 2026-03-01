@@ -383,6 +383,30 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Constructor Avanzado y Modal de Contenido (Phase 12.2)
+
+### Estado Actual:
+- **Actividad:** Mejora funcional del `CourseBuilder.jsx` para permitir una organización más limpia y selección explícita de tipos de lecciones.
+- **Fase:** Advanced Builder UI (Phase 12) - EXECUCIÓN (Subfase 12.2)
+
+### Acciones Realizadas:
+1.  **Secciones tipo Acordeón:** Se implementó lógica de expansión/colapso para las secciones del curso, permitiendo a los instructores enfocarse en un módulo a la vez.
+2.  **Modal de Selección de Contenido:** Se desarrolló un nuevo componente `ContentTypeModal` que se dispara al intentar añadir contenido. Permite elegir entre:
+    - **Lección de Texto** (Icono FileText)
+    - **Lección de Video** (Icono Video)
+    - **Cuestionario/Quiz** (Icono HelpCircle)
+    - **Recursos/Links** (Icono Link)
+3.  **UI/UX Refinada:** 
+    - Se agregaron iconos descriptivos para cada tipo de ítem en la lista.
+    - Se mejoraron los estados de hover y transiciones (desplazamientos sutiles a la derecha al pasar el mouse).
+    - Se diseñó un modal con desenfoque de fondo (`backdrop-filter`) y animaciones suaves de entrada.
+4.  **Gestión de Datos:** Se optimizó el flujo de creación de ítems para asignar IDs únicos basados en marcas de tiempo y tipos de contenido específicos.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Subfase 12.2: Constructor Avanzado con Acordeones y Modal de Selección.
+
+---
+
 ## [2026-03-01] - Refactorización de Layout: Advanced Builder (Phase 12.1)
 
 ### Estado Actual:
