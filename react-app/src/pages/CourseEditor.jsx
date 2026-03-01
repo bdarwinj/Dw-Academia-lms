@@ -1,16 +1,14 @@
 import React, { useState, useRef } from 'react';
 import {
-    X,
     Save,
     Eye,
     Settings,
     BookOpen,
     Layout,
-    CheckCircle,
     ArrowLeft,
     UploadCloud,
-    Image as ImageIcon,
-    Loader2
+    Loader2,
+    CheckCircle
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
@@ -44,8 +42,8 @@ const CourseEditor = () => {
 
     const tabs = [
         { id: 'general', label: 'Información General', icon: Layout },
-        { id: 'builder', label: 'Curriculum (D&D)', icon: BookOpen },
-        { id: 'settings', label: 'Ajustes del Curso', icon: Settings },
+        { id: 'builder', label: 'Constructor', icon: BookOpen },
+        { id: 'settings', label: 'Ajustes', icon: Settings },
     ];
 
     const availableCategories = ['Desarrollo Web', 'Marketing', 'Diseño', 'Negocios', 'Fotografía'];
@@ -54,16 +52,6 @@ const CourseEditor = () => {
         setSelectedCategories(prev =>
             prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
         );
-    };
-
-    const handleImageDrop = (e) => {
-        e.preventDefault();
-        const file = e.dataTransfer.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const url = URL.createObjectURL(file);
-            setThumbnailUrl(url);
-            setThumbnailFile(file);
-        }
     };
 
     const handleImageSelect = (e) => {
@@ -114,7 +102,6 @@ const CourseEditor = () => {
         setIsSaving(true);
         let featured_media = null;
 
-        // 1. Upload Thumbnail if changed
         if (thumbnailFile) {
             const formData = new FormData();
             formData.append('file', thumbnailFile);
@@ -134,7 +121,6 @@ const CourseEditor = () => {
             }
         }
 
-        // 2. Prepare payload
         const payload = {
             title: courseTitle,
             description,
@@ -147,7 +133,6 @@ const CourseEditor = () => {
         if (featured_media) payload.featured_media = featured_media;
         if (builderData) payload.builder_data = builderData;
 
-        // 3. Save or Update Course
         try {
             const endpoint = id ? `academia-lms/v1/courses/${id}` : `academia-lms/v1/courses`;
             const method = id ? 'PUT' : 'POST';
@@ -182,214 +167,177 @@ const CourseEditor = () => {
     return (
         <div className="course-editor-fullscreen">
             {loading && (
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(255,255,255,0.7)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="editor-loading-overlay">
                     <Loader2 className="spinner" size={40} color="#9333ea" />
-                    <style>{`.spinner { animation: spin 1s linear infinite; } @keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
                 </div>
             )}
 
             {/* Top Bar Navigation */}
-            <div className="editor-topbar">
-                <div className="editor-left">
-                    <button className="btn-close" onClick={() => window.history.back()}>
-                        <X size={20} />
+            <header className="editor-topbar">
+                <div className="editor-top-left">
+                    <button className="btn-close-circle" onClick={() => navigate('/courses')}>
+                        <ArrowLeft size={20} />
                     </button>
-                    <div className="editor-title-container">
-                        <span className="editor-badge">EDITANDO CURSO</span>
+                    <div className="editor-header-info">
+                        <span className="info-badge">EDITANDO CURSO</span>
                         <input
                             type="text"
-                            className="editor-title-input"
-                            placeholder="Título del Curso..."
+                            className="header-title-input"
+                            placeholder="Nombre del curso..."
                             value={courseTitle}
                             onChange={(e) => setCourseTitle(e.target.value)}
                         />
                     </div>
                 </div>
 
-                <div className="editor-actions">
-                    <button className="btn-secondary" disabled={isSaving}>
-                        <Eye size={18} /> Previsualizar
-                    </button>
-                    <button className="btn-primary" onClick={handleSave} disabled={isSaving || loading}>
-                        {isSaving ? <Loader2 className="spinner" size={18} /> : <Save size={18} />}
-                        {isSaving ? 'Guardando...' : 'Guardar Cambios'}
-                    </button>
-                </div>
-            </div>
-
-            {/* Sidebar Navigation */}
-            <div className="editor-layout">
-                <aside className="editor-sidebar">
+                <nav className="editor-nav-tabs">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
-                            className={`editor-nav-item ${activeTab === tab.id ? 'active' : ''}`}
+                            className={`nav-tab-item ${activeTab === tab.id ? 'active' : ''}`}
                             onClick={() => setActiveTab(tab.id)}
                         >
-                            <tab.icon size={20} />
+                            <tab.icon size={18} />
                             <span>{tab.label}</span>
                         </button>
                     ))}
+                </nav>
 
-                    <div className="editor-sidebar-footer">
-                        <div className="progress-card">
-                            <div className="progress-info">
-                                <span>Progreso de creación</span>
-                                <span>30%</span>
-                            </div>
-                            <div className="progress-bar">
-                                <div className="progress-fill" style={{ width: '30%' }}></div>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
+                <div className="editor-top-actions">
+                    <button className="btn-secondary-light" onClick={() => alert('Vista previa...')}>
+                        <Eye size={18} /> Previsualizar
+                    </button>
+                    <button className="btn-primary-purple" onClick={handleSave} disabled={isSaving || loading}>
+                        {isSaving ? <Loader2 className="spinner" size={18} /> : <Save size={18} />}
+                        {isSaving ? 'Guardando...' : 'Publicar'}
+                    </button>
+                </div>
+            </header>
 
-                {/* Main Edit Area */}
-                <main className="editor-content">
-                    {activeTab === 'general' && (
-                        <div className="editor-pane anim-fade-in">
-                            <div className="pane-header">
-                                <h2>Configuración General</h2>
-                                <p>Define el título, descripción y multimedia de tu curso.</p>
+            {/* Content Area */}
+            <main className="editor-main-scroll">
+                {activeTab === 'general' && (
+                    <div className="overview-layout anim-fade-in">
+                        {/* Main Pillar (70%) */}
+                        <div className="overview-main-pillar">
+                            <div className="pillar-block">
+                                <label className="block-label">Título del Curso</label>
+                                <input
+                                    type="text"
+                                    className="pill-input-title"
+                                    placeholder="ej: Master Class de React Avanzado"
+                                    value={courseTitle}
+                                    onChange={(e) => setCourseTitle(e.target.value)}
+                                />
                             </div>
-                            <div className="editor-form">
-                                <div className="form-group" style={{ marginBottom: '4rem' }}>
-                                    <label>Descripción del Curso</label>
+
+                            <div className="pillar-block">
+                                <label className="block-label">Descripción Detallada</label>
+                                <div className="quill-wrapper-advanced">
                                     <ReactQuill
                                         theme="snow"
                                         value={description}
                                         onChange={setDescription}
-                                        style={{ height: '250px' }}
                                     />
                                 </div>
+                            </div>
 
-                                <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Imagen de Portada</label>
-                                        <div
-                                            className="dropzone-interactive"
-                                            onDragOver={(e) => e.preventDefault()}
-                                            onDrop={handleImageDrop}
-                                            onClick={() => fileInputRef.current.click()}
-                                        >
-                                            <input
-                                                type="file"
-                                                hidden
-                                                ref={fileInputRef}
-                                                accept="image/*"
-                                                onChange={handleImageSelect}
-                                            />
-                                            {thumbnailUrl ? (
-                                                <img src={thumbnailUrl} alt="Thumbnail preview" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px' }} />
-                                            ) : (
-                                                <div className="dropzone-content">
-                                                    <UploadCloud size={32} color="#94a3b8" style={{ marginBottom: '10px' }} />
-                                                    <span>Haz clic o arrastra una imagen aquí</span>
-                                                    <span style={{ fontSize: '12px', color: '#94a3b8', marginTop: '5px' }}>JPG, PNG, WebP (Max 2MB)</span>
-                                                </div>
-                                            )}
+                            <div className="pillar-block">
+                                <label className="block-label">Puntos Clave (Highlights)</label>
+                                <textarea
+                                    className="pillar-textarea"
+                                    placeholder="¿Qué logrará el estudiante?"
+                                    rows="4"
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        {/* Sidebar Pillar (30%) */}
+                        <aside className="overview-sidebar-pillar">
+                            <div className="sidebar-block">
+                                <label className="block-label">Portada del Curso</label>
+                                <div className="dropzone-premium" onClick={() => fileInputRef.current.click()}>
+                                    <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={handleImageSelect} />
+                                    {thumbnailUrl ? (
+                                        <img src={thumbnailUrl} alt="Thumbnail" className="img-full" />
+                                    ) : (
+                                        <div className="placeholder-content">
+                                            <UploadCloud size={28} />
+                                            <span>Subir Portada</span>
                                         </div>
-                                        {thumbnailUrl && (
-                                            <button className="btn-text" style={{ marginTop: '0.5rem', color: '#ef4444' }} onClick={() => setThumbnailUrl(null)}>
-                                                Quitar imagen
-                                            </button>
-                                        )}
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Video Promocional</label>
-                                        <input
-                                            type="text"
-                                            placeholder="URL de YouTube, Vimeo o MP4"
-                                            className="academia-input"
-                                            value={videoUrl}
-                                            onChange={(e) => setVideoUrl(e.target.value)}
-                                        />
-                                        <p style={{ fontSize: '13px', color: '#64748b', marginTop: '0.5rem' }}>
-                                            Ingresa el enlace al video de introducción. Los estudiantes lo verán antes de matricularse.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {activeTab === 'builder' && (
-                        <div className="editor-pane anim-fade-in" style={{ padding: 0 }}>
-                            <CourseBuilder />
-                        </div>
-                    )}
-
-                    {activeTab === 'settings' && (
-                        <div className="editor-pane anim-fade-in">
-                            <div className="pane-header">
-                                <h2>Ajustes Avanzados</h2>
-                                <p>Configura precio, estado, taxonomías y dificultad del curso.</p>
-                            </div>
-
-                            <div className="form-grid">
-                                <div className="form-group">
-                                    <label>Estado de Publicación</label>
-                                    <select
-                                        className="academia-select"
-                                        value={status}
-                                        onChange={e => setStatus(e.target.value)}
-                                    >
-                                        <option value="draft">Borrador (Privado)</option>
-                                        <option value="publish">Publicado (Visible)</option>
-                                    </select>
-                                </div>
-                                <div className="form-group">
-                                    <label>Precio (USD)</label>
-                                    <input
-                                        type="number"
-                                        className="academia-input"
-                                        value={price}
-                                        onChange={e => setPrice(e.target.value)}
-                                        min="0"
-                                        step="0.01"
-                                    />
-                                    <span style={{ fontSize: '12px', color: '#64748b' }}>Deja 0 para que sea un curso Gratuito.</span>
-                                </div>
-                                <div className="form-group">
-                                    <label>Nivel del Curso</label>
-                                    <select
-                                        className="academia-select"
-                                        value={level}
-                                        onChange={e => setLevel(e.target.value)}
-                                    >
-                                        <option value="beginner">Principiante</option>
-                                        <option value="intermediate">Intermedio</option>
-                                        <option value="advanced">Avanzado</option>
-                                        <option value="all">Todos los niveles</option>
-                                    </select>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="form-group" style={{ marginTop: '2rem' }}>
-                                <label>Categorías / Etiquetas</label>
-                                <div className="categories-grid" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                            <div className="sidebar-block">
+                                <label className="block-label">Categorías</label>
+                                <div className="categories-stack">
                                     {availableCategories.map(cat => (
-                                        <label
-                                            key={cat}
-                                            className={`category-pill ${selectedCategories.includes(cat) ? 'selected' : ''}`}
-                                        >
+                                        <label key={cat} className="stack-item">
                                             <input
                                                 type="checkbox"
-                                                hidden
                                                 checked={selectedCategories.includes(cat)}
                                                 onChange={() => handleCategoryToggle(cat)}
                                             />
-                                            {selectedCategories.includes(cat) && <CheckCircle size={14} />}
-                                            {cat}
+                                            <span>{cat}</span>
                                         </label>
                                     ))}
                                 </div>
                             </div>
 
+                            <div className="sidebar-block">
+                                <label className="block-label">Nivel / Dificultad</label>
+                                <select className="pillar-select" value={level} onChange={e => setLevel(e.target.value)}>
+                                    <option value="beginner">Principiante</option>
+                                    <option value="intermediate">Intermedio</option>
+                                    <option value="advanced">Avanzado</option>
+                                </select>
+                            </div>
+
+                            <div className="sidebar-block">
+                                <label className="block-label">Slug del Curso</label>
+                                <input type="text" className="pillar-input-sm" placeholder="url-del-curso" defaultValue={courseTitle.toLowerCase().replace(/ /g, '-')} />
+                            </div>
+                        </aside>
+                    </div>
+                )}
+
+                {activeTab === 'builder' && (
+                    <div className="builder-canvas-wrapper anim-fade-in">
+                        <CourseBuilder value={builderData} onChange={setBuilderData} />
+                    </div>
+                )}
+
+                {activeTab === 'settings' && (
+                    <div className="settings-master-detail-layout anim-fade-in">
+                        <aside className="settings-nav-master">
+                            <button className="nav-master-item active">General</button>
+                            <button className="nav-master-item">Precios</button>
+                            <button className="nav-master-item">Acceso y Restricciones</button>
+                            <button className="nav-master-item">Visualización</button>
+                            <button className="nav-master-item">Certificaciones</button>
+                        </aside>
+                        <div className="settings-detail-panel">
+                            <div className="detail-section">
+                                <h3>Configuración de Instructor</h3>
+                                <div className="form-row">
+                                    <label>Instructor Principal:</label>
+                                    <input type="text" className="pillar-input-sm" disabled value="darwin" />
+                                </div>
+                                <div className="form-row">
+                                    <label>Duración del Curso:</label>
+                                    <div className="input-group-duration">
+                                        <input type="number" placeholder="0" className="pillar-input-number" />
+                                        <span>Horas</span>
+                                        <input type="number" placeholder="0" className="pillar-input-number" />
+                                        <span>Minutos</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    )}
-                </main>
-            </div>
+                    </div>
+                )}
+            </main>
 
             <style>{`
                 .course-editor-fullscreen {
@@ -398,199 +346,115 @@ const CourseEditor = () => {
                     left: 0;
                     width: 100vw;
                     height: 100vh;
-                    background: #fff;
-                    z-index: 9999;
+                    background: #f1f5f9;
+                    z-index: 10000;
                     display: flex;
                     flex-direction: column;
+                    font-family: 'Inter', sans-serif;
+                }
+                .editor-loading-overlay {
+                    position: absolute;
+                    inset: 0;
+                    background: rgba(255,255,255,0.7);
+                    z-index: 50;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
                 .editor-topbar {
-                    height: 70px;
+                    height: 72px;
+                    background: #fff;
                     border-bottom: 1px solid #e2e8f0;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     padding: 0 1.5rem;
-                    background: #fff;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
                 }
-                .editor-left {
-                    display: flex;
-                    align-items: center;
-                    gap: 1.5rem;
-                }
-                .btn-close {
-                    background: #f1f5f9;
-                    border: none;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    color: #64748b;
-                }
-                .editor-title-container {
-                    display: flex;
-                    flex-direction: column;
-                }
-                .editor-badge {
-                    font-size: 10px;
-                    font-weight: 800;
-                    color: #9333ea;
-                    letter-spacing: 1px;
-                }
-                .editor-title-input {
-                    border: none;
-                    font-size: 1.25rem;
-                    font-weight: 700;
-                    color: #1e293b;
-                    outline: none;
-                    width: 400px;
-                    padding: 0;
-                }
-                .editor-actions {
-                    display: flex;
-                    gap: 0.75rem;
-                }
-                .editor-layout {
-                    flex: 1;
-                    display: flex;
-                    overflow: hidden;
-                }
-                .editor-sidebar {
-                    width: 280px;
-                    border-right: 1px solid #e2e8f0;
-                    background: #f8fafc;
-                    display: flex;
-                    flex-direction: column;
-                    padding: 1rem 0;
-                }
-                .editor-nav-item {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-                    padding: 1rem 1.5rem;
-                    border: none;
-                    background: transparent;
-                    width: 100%;
-                    cursor: pointer;
-                    color: #64748b;
-                    font-weight: 500;
-                    transition: all 0.2s;
-                    border-left: 4px solid transparent;
-                }
-                .editor-nav-item.active {
-                    color: #9333ea;
-                    background: #f3e8ff;
-                    border-left-color: #9333ea;
-                }
-                .editor-sidebar-footer {
-                    margin-top: auto;
-                    padding: 1.5rem;
-                }
-                .progress-card {
-                    background: #fff;
-                    padding: 1rem;
-                    border-radius: 12px;
-                    border: 1px solid #e2e8f0;
-                }
-                .progress-info {
-                    display: flex;
-                    justify-content: space-between;
-                    font-size: 12px;
-                    font-weight: 600;
-                    margin-bottom: 0.5rem;
-                }
-                .progress-bar {
-                    height: 6px;
-                    background: #f1f5f9;
-                    border-radius: 3px;
-                }
-                .progress-fill {
-                    height: 100%;
-                    background: #9333ea;
-                    border-radius: 3px;
-                }
-                .editor-content {
-                    flex: 1;
-                    overflow-y: auto;
-                    padding: 3rem;
-                    background: #fff;
-                }
-                .editor-pane {
-                    max-width: 900px;
-                    margin: 0 auto;
-                }
-                .pane-header {
-                    margin-bottom: 2.5rem;
-                }
-                .pane-header h2 { font-size: 2rem; font-weight: 800; margin: 0; }
-                .pane-header p { color: #64748b; margin-top: 0.5rem; }
-                .anim-fade-in { animation: fadeIn 0.4s ease; }
-                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-                
-                .form-group { margin-bottom: 2rem; }
-                .form-group label { display: block; font-weight: 600; margin-bottom: 0.75rem; color: #1e293b; }
-                .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-                
-                .dropzone-interactive {
-                    height: 180px;
-                    border: 2px dashed #cbd5e1;
-                    border-radius: 12px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: #64748b;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    background: #f8fafc;
-                }
-                .dropzone-interactive:hover { border-color: #9333ea; background: #f3e8ff; color: #9333ea; }
-                .dropzone-content { display: flex; flex-direction: column; alignItems: center; textAlign: center; }
-                
-                .academia-input, .academia-select {
-                    width: 100%;
-                    padding: 0.75rem;
-                    border-radius: 8px;
-                    border: 1px solid #cbd5e1;
-                    outline: none;
-                    background: #fff;
-                    font-size: 14px;
-                }
-                .academia-input:focus, .academia-select:focus { border-color: #9333ea; box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1); }
-                
-                .category-pill {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.375rem;
-                    padding: 0.5rem 1rem;
-                    border-radius: 20px;
-                    border: 1px solid #cbd5e1;
-                    background: #fff;
-                    color: #475569;
-                    font-size: 14px;
-                    cursor: pointer;
+                .editor-top-left { display: flex; align-items: center; gap: 1rem; }
+                .btn-close-circle {
+                    width: 40px; height: 40px; border-radius: 50%; border: none; background: #f8fafc;
+                    display: flex; align-items: center; justify-content: center; cursor: pointer; color: #64748b;
                     transition: all 0.2s;
                 }
-                .category-pill.selected {
-                    background: #9333ea;
-                    border-color: #9333ea;
-                    color: #fff;
+                .btn-close-circle:hover { background: #e2e8f0; color: #1e293b; }
+                .editor-header-info { display: flex; flex-direction: column; }
+                .info-badge { font-size: 10px; font-weight: 800; color: #9333ea; letter-spacing: 0.5px; }
+                .header-title-input { border: none; outline: none; font-size: 18px; font-weight: 700; color: #1e293b; padding: 0; width: 350px; background: transparent; }
+
+                .editor-nav-tabs { display: flex; gap: 2rem; height: 100%; align-items: center; }
+                .nav-tab-item {
+                    display: flex; align-items: center; gap: 0.5rem; background: none; border: none;
+                    height: 100%; border-bottom: 3px solid transparent; color: #64748b; font-weight: 600;
+                    cursor: pointer; padding: 0 0.5rem; transition: all 0.2s;
                 }
-                
-                .btn-text {
-                    background: none;
-                    border: none;
-                    font-size: 13px;
-                    cursor: pointer;
-                    font-weight: 500;
+                .nav-tab-item.active { color: #9333ea; border-bottom-color: #9333ea; }
+
+                .editor-top-actions { display: flex; gap: 0.75rem; }
+                .btn-primary-purple {
+                    background: #9333ea; color: #fff; border: none; padding: 0.6rem 1.25rem; border-radius: 8px;
+                    font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: all 0.2s;
                 }
-                .btn-text:hover { text-decoration: underline; }
-                
-                /* Quill overrides */
-                .ql-editor { font-family: 'Inter', sans-serif; font-size: 15px; }
-                .ql-container { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
-                .ql-toolbar { border-top-left-radius: 8px; border-top-right-radius: 8px; background: #f8fafc; }
+                .btn-primary-purple:hover { background: #7e22ce; transform: translateY(-1px); }
+                .btn-secondary-light {
+                    background: #fff; color: #64748b; border: 1px solid #e2e8f0; padding: 0.6rem 1.25rem; border-radius: 8px;
+                    font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;
+                }
+
+                .editor-main-scroll { flex: 1; overflow-y: auto; padding: 2rem; }
+
+                /* Overview Layout */
+                .overview-layout { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 320px; gap: 2rem; }
+                .overview-main-pillar { display: flex; flex-direction: column; gap: 1.5rem; }
+                .pillar-block { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+                .block-label { display: block; font-weight: 700; color: #1e293b; margin-bottom: 1rem; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+                .pill-input-title { width: 100%; padding: 0.8rem; font-size: 1.25rem; font-weight: 700; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; }
+                .pill-input-title:focus { border-color: #9333ea; }
+                .quill-wrapper-advanced .ql-container { min-height: 250px; font-size: 16px; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+                .quill-wrapper-advanced .ql-toolbar { border-top-left-radius: 8px; border-top-right-radius: 8px; background: #f8fafc; }
+                .pillar-textarea { width: 100%; padding: 0.8rem; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; resize: vertical; }
+
+                .overview-sidebar-pillar { display: flex; flex-direction: column; gap: 1.5rem; }
+                .sidebar-block { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 1.5rem; }
+                .dropzone-premium {
+                    height: 160px; border: 2px dashed #cbd5e1; border-radius: 10px; background: #f8fafc;
+                    display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden;
+                    transition: all 0.2s;
+                }
+                .dropzone-premium:hover { border-color: #9333ea; background: #f3e8ff; }
+                .img-full { width: 100%; height: 100%; object-fit: cover; }
+                .placeholder-content { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: #94a3b8; font-weight: 600; font-size: 13px; }
+
+                .categories-stack { max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; background: #f8fafc; padding: 1rem; border-radius: 8px; }
+                .stack-item { display: flex; align-items: center; gap: 0.75rem; font-size: 14px; color: #475569; cursor: pointer; }
+                .stack-item input { width: 16px; height: 16px; accent-color: #9333ea; }
+
+                .pillar-select, .pillar-input-sm { width: 100%; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; outline: none; }
+                .pillar-input-number { width: 60px; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 6px; text-align: center; outline: none; }
+
+                /* Settings Layout */
+                .settings-master-detail-layout {
+                    max-width: 1000px; margin: 0 auto; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;
+                    display: grid; grid-template-columns: 240px 1fr; min-height: 500px; overflow: hidden;
+                }
+                .settings-nav-master { background: #f8fafc; border-right: 1px solid #e2e8f0; padding: 1rem 0; }
+                .nav-master-item {
+                    width: 100%; text-align: left; padding: 1rem 1.5rem; border: none; background: transparent;
+                    color: #64748b; font-weight: 600; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s;
+                }
+                .nav-master-item.active { background: #fff; color: #9333ea; border-left-color: #9333ea; }
+                .settings-detail-panel { padding: 2.5rem; }
+                .detail-section h3 { margin-bottom: 2rem; font-size: 1.25rem; font-weight: 800; color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 1rem; }
+                .form-row { display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem; }
+                .form-row label { font-weight: 700; color: #475569; min-width: 160px; font-size: 14px; }
+                .input-group-duration { display: flex; align-items: center; gap: 1rem; color: #64748b; font-size: 13px; }
+
+                .builder-canvas-wrapper { max-width: 1000px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; }
+
+                .anim-fade-in { animation: fadeIn 0.3s ease; }
+                @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+                .spinner { animation: spin 1s linear infinite; }
+                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
             `}</style>
         </div>
     );

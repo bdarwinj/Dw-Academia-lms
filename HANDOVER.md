@@ -383,6 +383,26 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Refactorización de Layout: Advanced Builder (Phase 12.1)
+
+### Estado Actual:
+- **Actividad:** Transformación de la interfaz del editor de cursos hacia un modelo basado en pestañas horizontales y barras laterales contextuales.
+- **Fase:** Advanced Builder UI (Phase 12) - EXECUCIÓN (Subfase 12.1)
+
+### Acciones Realizadas:
+1.  **Nuevo Layout de Navegación:** Se refactorizó `CourseEditor.jsx` para reemplazar la barra lateral izquierda por un sistema de **Pestañas Horizontales** (`Overview`, `Builder`, `Settings`) en la barra superior.
+2.  **Distribución Inmersiva (70/30):** En la pestaña `Overview`, se implementó un diseño de dos columnas:
+    - **Pilar Principal:** Título, Descripción (ReactQuill) y Highlights.
+    - **Pilar de Sidebar:** Imagen Destacada (Dropzone), Categorías, Nivel y Slug.
+3.  **Ajustes Master-Detail:** Se preparó la estructura de la pestaña `Settings` con una navegación vertical secundaria para separar Pricing, Accesos e Instructores.
+4.  **Estilos Premium:** Se inyectaron estilos CSS actualizados para lograr bordes suaves, sombras sutiles y una tipografía más legible, imitando la estética de Masteriyo LMS.
+5.  **Fix de Estabilidad:** Se corrigieron errores de sintaxis en el archivo principal y se validó que las funciones de guardado y carga sigan operativas.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Subfase 12.1: Refactorización de Layout y Navegación Advanced Builder.
+
+---
+
 ## [2026-03-01] - Análisis y Planificación: Advanced Builder UI (Phase 12)
 
 ### Estado Actual:
