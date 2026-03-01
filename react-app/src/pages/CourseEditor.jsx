@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     X,
     Save,
@@ -7,19 +7,60 @@ import {
     BookOpen,
     Layout,
     CheckCircle,
-    ArrowLeft
+    ArrowLeft,
+    UploadCloud,
+    Image as ImageIcon
 } from 'lucide-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import CourseBuilder from '../components/CourseBuilder/CourseBuilder';
 
 const CourseEditor = () => {
     const [activeTab, setActiveTab] = useState('general');
+
+    // Global Course State
     const [courseTitle, setCourseTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [videoUrl, setVideoUrl] = useState('');
+    const [price, setPrice] = useState('0');
+    const [status, setStatus] = useState('draft');
+    const [level, setLevel] = useState('beginner');
+    const [selectedCategories, setSelectedCategories] = useState([]);
+
+    // Thumbnail State
+    const [thumbnailUrl, setThumbnailUrl] = useState(null);
+    const fileInputRef = useRef(null);
 
     const tabs = [
         { id: 'general', label: 'Información General', icon: Layout },
         { id: 'builder', label: 'Curriculum (D&D)', icon: BookOpen },
         { id: 'settings', label: 'Ajustes del Curso', icon: Settings },
     ];
+
+    const availableCategories = ['Desarrollo Web', 'Marketing', 'Diseño', 'Negocios', 'Fotografía'];
+
+    const handleCategoryToggle = (cat) => {
+        setSelectedCategories(prev =>
+            prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+        );
+    };
+
+    const handleImageDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const url = URL.createObjectURL(file);
+            setThumbnailUrl(url);
+        }
+    };
+
+    const handleImageSelect = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setThumbnailUrl(url);
+        }
+    };
 
     return (
         <div className="course-editor-fullscreen">
@@ -87,22 +128,60 @@ const CourseEditor = () => {
                                 <p>Define el título, descripción y multimedia de tu curso.</p>
                             </div>
                             <div className="editor-form">
-                                <div className="form-group">
+                                <div className="form-group" style={{ marginBottom: '4rem' }}>
                                     <label>Descripción del Curso</label>
-                                    <div className="placeholder-editor" style={{ height: '300px', background: '#f8fafc', border: '2px dashed #e2e8f0', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
-                                        Inserción de Editor Rico (Quill/Gutenberg) - Fase 9.2
-                                    </div>
+                                    <ReactQuill
+                                        theme="snow"
+                                        value={description}
+                                        onChange={setDescription}
+                                        style={{ height: '250px' }}
+                                    />
                                 </div>
+
                                 <div className="form-grid">
                                     <div className="form-group">
                                         <label>Imagen de Portada</label>
-                                        <div className="dropzone-mock">
-                                            <span>Click para subir o arrastrar archivo</span>
+                                        <div
+                                            className="dropzone-interactive"
+                                            onDragOver={(e) => e.preventDefault()}
+                                            onDrop={handleImageDrop}
+                                            onClick={() => fileInputRef.current.click()}
+                                        >
+                                            <input
+                                                type="file"
+                                                hidden
+                                                ref={fileInputRef}
+                                                accept="image/*"
+                                                onChange={handleImageSelect}
+                                            />
+                                            {thumbnailUrl ? (
+                                                <img src={thumbnailUrl} alt="Thumbnail preview" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px' }} />
+                                            ) : (
+                                                <div className="dropzone-content">
+                                                    <UploadCloud size={32} color="#94a3b8" style={{ marginBottom: '10px' }} />
+                                                    <span>Haz clic o arrastra una imagen aquí</span>
+                                                    <span style={{ fontSize: '12px', color: '#94a3b8', marginTop: '5px' }}>JPG, PNG, WebP (Max 2MB)</span>
+                                                </div>
+                                            )}
                                         </div>
+                                        {thumbnailUrl && (
+                                            <button className="btn-text" style={{ marginTop: '0.5rem', color: '#ef4444' }} onClick={() => setThumbnailUrl(null)}>
+                                                Quitar imagen
+                                            </button>
+                                        )}
                                     </div>
                                     <div className="form-group">
                                         <label>Video Promocional</label>
-                                        <input type="text" placeholder="URL de YouTube o Vimeo" className="academia-input" />
+                                        <input
+                                            type="text"
+                                            placeholder="URL de YouTube, Vimeo o MP4"
+                                            className="academia-input"
+                                            value={videoUrl}
+                                            onChange={(e) => setVideoUrl(e.target.value)}
+                                        />
+                                        <p style={{ fontSize: '13px', color: '#64748b', marginTop: '0.5rem' }}>
+                                            Ingresa el enlace al video de introducción. Los estudiantes lo verán antes de matricularse.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -117,8 +196,71 @@ const CourseEditor = () => {
 
                     {activeTab === 'settings' && (
                         <div className="editor-pane anim-fade-in">
-                            <h2>Ajustes Avanzados</h2>
-                            <p>En construcción - Fase 9.2</p>
+                            <div className="pane-header">
+                                <h2>Ajustes Avanzados</h2>
+                                <p>Configura precio, estado, taxonomías y dificultad del curso.</p>
+                            </div>
+
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Estado de Publicación</label>
+                                    <select
+                                        className="academia-select"
+                                        value={status}
+                                        onChange={e => setStatus(e.target.value)}
+                                    >
+                                        <option value="draft">Borrador (Privado)</option>
+                                        <option value="publish">Publicado (Visible)</option>
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label>Precio (USD)</label>
+                                    <input
+                                        type="number"
+                                        className="academia-input"
+                                        value={price}
+                                        onChange={e => setPrice(e.target.value)}
+                                        min="0"
+                                        step="0.01"
+                                    />
+                                    <span style={{ fontSize: '12px', color: '#64748b' }}>Deja 0 para que sea un curso Gratuito.</span>
+                                </div>
+                                <div className="form-group">
+                                    <label>Nivel del Curso</label>
+                                    <select
+                                        className="academia-select"
+                                        value={level}
+                                        onChange={e => setLevel(e.target.value)}
+                                    >
+                                        <option value="beginner">Principiante</option>
+                                        <option value="intermediate">Intermedio</option>
+                                        <option value="advanced">Avanzado</option>
+                                        <option value="all">Todos los niveles</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="form-group" style={{ marginTop: '2rem' }}>
+                                <label>Categorías / Etiquetas</label>
+                                <div className="categories-grid" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                    {availableCategories.map(cat => (
+                                        <label
+                                            key={cat}
+                                            className={`category-pill ${selectedCategories.includes(cat) ? 'selected' : ''}`}
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                hidden
+                                                checked={selectedCategories.includes(cat)}
+                                                onChange={() => handleCategoryToggle(cat)}
+                                            />
+                                            {selectedCategories.includes(cat) && <CheckCircle size={14} />}
+                                            {cat}
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+
                         </div>
                     )}
                 </main>
@@ -265,26 +407,65 @@ const CourseEditor = () => {
                 .form-group { margin-bottom: 2rem; }
                 .form-group label { display: block; font-weight: 600; margin-bottom: 0.75rem; color: #1e293b; }
                 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-                .dropzone-mock {
-                    height: 150px;
-                    border: 2px dashed #e2e8f0;
+                
+                .dropzone-interactive {
+                    height: 180px;
+                    border: 2px dashed #cbd5e1;
                     border-radius: 12px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    color: #94a3b8;
-                    font-size: 0.875rem;
+                    color: #64748b;
                     cursor: pointer;
-                    transition: border 0.2s;
+                    transition: all 0.2s;
+                    background: #f8fafc;
                 }
-                .dropzone-mock:hover { border-color: #9333ea; color: #9333ea; }
-                .academia-input {
+                .dropzone-interactive:hover { border-color: #9333ea; background: #f3e8ff; color: #9333ea; }
+                .dropzone-content { display: flex; flex-direction: column; alignItems: center; textAlign: center; }
+                
+                .academia-input, .academia-select {
                     width: 100%;
                     padding: 0.75rem;
                     border-radius: 8px;
-                    border: 1px solid #e2e8f0;
+                    border: 1px solid #cbd5e1;
                     outline: none;
+                    background: #fff;
+                    font-size: 14px;
                 }
+                .academia-input:focus, .academia-select:focus { border-color: #9333ea; box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1); }
+                
+                .category-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.375rem;
+                    padding: 0.5rem 1rem;
+                    border-radius: 20px;
+                    border: 1px solid #cbd5e1;
+                    background: #fff;
+                    color: #475569;
+                    font-size: 14px;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .category-pill.selected {
+                    background: #9333ea;
+                    border-color: #9333ea;
+                    color: #fff;
+                }
+                
+                .btn-text {
+                    background: none;
+                    border: none;
+                    font-size: 13px;
+                    cursor: pointer;
+                    font-weight: 500;
+                }
+                .btn-text:hover { text-decoration: underline; }
+                
+                /* Quill overrides */
+                .ql-editor { font-family: 'Inter', sans-serif; font-size: 15px; }
+                .ql-container { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
+                .ql-toolbar { border-top-left-radius: 8px; border-top-right-radius: 8px; background: #f8fafc; }
             `}</style>
         </div>
     );

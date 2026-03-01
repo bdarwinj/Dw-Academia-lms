@@ -307,7 +307,27 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 5.  **Corrección de Importación (ReferenceError):** Se añadió el icono `Users` faltante en las importaciones de `Courses.jsx` provenientes de `lucide-react`, evitando que el renderizado se rompiera en Safari/Chrome. Todo fue compilado nuevamente con Vite.
 
 ### Git Backup:
-- **Hash/Commit:** Fix de importación faltante (Users icon) en Courses.jsx y recompilación.Creador de Cursos (Phase 9.1).
+- **Hash/Commit:** Fix de importación faltante (Users icon) en Courses.jsx y recompilación.
+
+---
+
+## [2026-03-01] - Controles Laterales UI y Metadatos (Phase 9.2)
+
+### Estado Actual:
+- **Actividad:** Implementación de la vista `CourseEditor.jsx` con utilidades de campos enriquecidos y taxonomías.
+
+### Acciones Realizadas:
+1.  **Editor de Texto Enriquecido:** Se instaló y configuró la librería `react-quill` en el frontend (`react-app`) para habilitar capacidades WYSIWYG en el campo "Descripción del Curso".
+2.  **Dropzone Interactivo:** Se programó un área de "arrastrar y soltar" (`Dropzone`) nativa en HTML5 para la carga visual y previsualización local de la "Imagen de Portada" del curso.
+3.  **Ajustes Avanzados:** Se construyó la interfaz de usuario en la pestaña "Ajustes del Curso", agregando campos para:
+    *   Estado de Publicación (Borrador/Publicado)
+    *   Precio (USD)
+    *   Nivel del Curso (Selectores)
+    *   Categorías dinámicas (Checkboxes interactivos)
+4.  **Estado Global del Curso:** El componente funcional en React ahora guarda satisfactoriamente todas las interacciones de estos campos dentro de su arbol de estados locales `useState`, listos para ser consumidos por un dispatch hacia la base de datos (Fase 9.3).
+
+### Git Backup:
+- **Hash/Commit:** Creador Inmersivo Subfase 9.2 - UI de Metadatos y ReactQuill
 
 ---
 
