@@ -115,3 +115,18 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 4.1):
 - [ ] Integración con WooCommerce.
 - [ ] Enlazar el flujo para que al comprar un producto de tipo Curso, el alumno quede matriculado.
+
+---
+
+## [2026-03-01] - Inicio de Fase 4: Monetización (WooCommerce)
+
+### Estado Actual:
+- **Fase:** Integración con WooCommerce (Phase 4.1) - COMPLETADA
+- **Actividad:** Conectar nuestro LMS con la pasarela de pagos líder, permitiendo asignar un curso a un producto y automatizando la matrícula tras compra exitosa.
+
+### Resumen de Cambios:
+1.  **Metabox en Productos:** Construida la clase `WooCommerce` en `includes/Integrations/`. Añade un metabox lateral a la pantalla de edición de Productos en WooCommerce donde puedes seleccionar a qué Curso está vinculado el producto.
+2.  **Auto-Matriculación Automática:** Creado el hook conectado a `woocommerce_order_status_completed`. Cuando un estudiante paga y su orden se completa, el sistema iterará los productos de su carrito y creará fluidamente su asiento en nuestra tabla nativa `academia_matriculas`.
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 4.2):
+- [ ] Construir pantalla de administración de matrículas para que el profesor/admin vea quién está matriculado y asigne usuarios a mano.

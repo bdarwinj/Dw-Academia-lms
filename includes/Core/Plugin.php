@@ -63,6 +63,9 @@ class Plugin {
 		\AcademiaLms\Frontend\TemplateLoader::init();
 		\AcademiaLms\Frontend\Shortcodes::init();
 
+		// Integraciones (WooCommerce, etc.)
+		\AcademiaLms\Integrations\WooCommerce::init();
+
 		// Registrar Hook de Activación (Migraciones DB)
 		register_activation_hook( ACADEMIA_LMS_FILE, [ '\AcademiaLms\Database\Migrations', 'init' ] );
 	}
