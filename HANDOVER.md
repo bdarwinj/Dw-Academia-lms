@@ -129,4 +129,20 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 2.  **Auto-Matriculación Automática:** Creado el hook conectado a `woocommerce_order_status_completed`. Cuando un estudiante paga y su orden se completa, el sistema iterará los productos de su carrito y creará fluidamente su asiento en nuestra tabla nativa `academia_matriculas`.
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 4.2):
-- [ ] Construir pantalla de administración de matrículas para que el profesor/admin vea quién está matriculado y asigne usuarios a mano.
+- [x] Construir pantalla de administración de matrículas para que el profesor/admin vea quién está matriculado y asigne usuarios a mano.
+
+---
+
+## [2026-03-01] - Gestión de Matrículas en Admin (Fase 4.2)
+
+### Estado Actual:
+- **Fase:** Gestión de Matrículas (Phase 4.2) - COMPLETADA
+- **Actividad:** Creación de una pantalla en el panel de WordPress dedicada a listar los estudiantes de nuestra tabla `academia_matriculas` y permitir asignaciones manuales en caso de pagos por fuera del sistema.
+
+### Resumen de Cambios:
+1.  **WP_List_Table Nativo:** Se creó la clase `Matriculas_Table` heredando de la funcionalidad nativa de WordPress para renderizar una tabla atractiva y familiar, la cual consulta directamente la tabla base de datos personalizada.
+2.  **Operaciones Manuales:** Agregado un formulario superior que lista los Usuarios registrados y los Cursos publicados, donde el administrador puede matricular estudiantes a demanda. También se incluyó funcionalidad para borrar en bloque (`delete`) apoyando mantenibilidad.
+3.  **Registro de Menú:** Todo esto fue atado al submenú "Matrículas" dentro del menú Academia LMS principal en el área administrativa de WordPress (`includes/Admin/Matriculas.php`).
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Cierre del Proyecto de Core MVP):
+- Revisar requerimientos de "Fase 5: Addons Pro" indicados en la planificación o decidir si se da por concluida la versión Base.

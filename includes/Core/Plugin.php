@@ -55,6 +55,7 @@ class Plugin {
 		// Inicializar Panel de Administración
 		if ( is_admin() ) {
 			\AcademiaLms\Admin\Menu::init();
+			\AcademiaLms\Admin\Matriculas::init();
 			\AcademiaLms\Admin\Metaboxes\Leccion::init();
 			\AcademiaLms\Admin\Metaboxes\Cuestionario::init();
 		}

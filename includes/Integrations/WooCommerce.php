@@ -118,7 +118,7 @@ class WooCommerce {
 		// Loop through order items
 		foreach ( $order->get_items() as $item_id => $item ) {
 			// Ensure item is a product line item
-			if ( is_callable( [ $item, 'get_product_id' ] ) ) {
+			if ( $item instanceof \WC_Order_Item_Product ) {
 				$product_id = $item->get_product_id();
 			} else {
 				$product_id = isset( $item['product_id'] ) ? $item['product_id'] : 0;
