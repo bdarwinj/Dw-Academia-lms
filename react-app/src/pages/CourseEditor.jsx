@@ -41,6 +41,17 @@ const CourseEditor = () => {
     const [builderData, setBuilderData] = useState(null);
     const [editingLesson, setEditingLesson] = useState(null); // { sectionId, itemId, type, title }
 
+    // Advanced Settings State
+    const [activeSettingsTab, setActiveSettingsTab] = useState('display');
+    const [settingsData, setSettingsData] = useState({
+        curriculumVisibility: 'always', // always | enrollers
+        allowReviews: true,
+        allowReviewsAfterCompletion: true,
+        welcomeMessage: false,
+        contentDripType: 'free', // free | sequential | date | days
+        enableCertificate: false
+    });
+
     const tabs = [
         { id: 'general', label: 'Información General', icon: Layout },
         { id: 'builder', label: 'Constructor', icon: BookOpen },
@@ -83,6 +94,9 @@ const CourseEditor = () => {
                     setSelectedCategories(data.categories || []);
                     if (data.thumbnail) setThumbnailUrl(data.thumbnail);
                     if (data.builder_data) setBuilderData(data.builder_data);
+                    if (data.settings_data) {
+                        setSettingsData(prev => ({ ...prev, ...data.settings_data }));
+                    }
                 }
             } catch (error) {
                 console.error("Error loading course:", error);
@@ -130,6 +144,7 @@ const CourseEditor = () => {
             status,
             level,
             categories: selectedCategories,
+            settings_data: settingsData
         };
         if (featured_media) payload.featured_media = featured_media;
         if (builderData) payload.builder_data = builderData;
@@ -456,29 +471,122 @@ const CourseEditor = () => {
                 {activeTab === 'settings' && (
                     <div className="settings-master-detail-layout anim-fade-in">
                         <aside className="settings-nav-master">
-                            <button className="nav-master-item active">General</button>
-                            <button className="nav-master-item">Precios</button>
-                            <button className="nav-master-item">Acceso y Restricciones</button>
-                            <button className="nav-master-item">Visualización</button>
-                            <button className="nav-master-item">Certificaciones</button>
+                            {[
+                                { id: 'pricing', label: 'Pricing' },
+                                { id: 'group_pricing', label: 'Group Pricing' },
+                                { id: 'general', label: 'General' },
+                                { id: 'schedule', label: 'Schedule & Access' },
+                                { id: 'display', label: 'Display' },
+                                { id: 'content_drip', label: 'Content Drip' },
+                                { id: 'certificate', label: 'Certificate' },
+                            ].map(tab => (
+                                <button
+                                    key={tab.id}
+                                    className={`nav-master-item ${activeSettingsTab === tab.id ? 'active' : ''}`}
+                                    onClick={() => setActiveSettingsTab(tab.id)}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
                         </aside>
                         <div className="settings-detail-panel">
-                            <div className="detail-section">
-                                <h3>Configuración de Instructor</h3>
-                                <div className="form-row">
-                                    <label>Instructor Principal:</label>
-                                    <input type="text" className="pillar-input-sm" disabled value="darwin" />
-                                </div>
-                                <div className="form-row">
-                                    <label>Duración del Curso:</label>
-                                    <div className="input-group-duration">
-                                        <input type="number" placeholder="0" className="pillar-input-number" />
-                                        <span>Horas</span>
-                                        <input type="number" placeholder="0" className="pillar-input-number" />
-                                        <span>Minutos</span>
+
+                            {activeSettingsTab === 'display' && (
+                                <div className="settings-tab-content anim-fade-in">
+                                    <div className="settings-form-row">
+                                        <div className="settings-col-label">
+                                            <span className="settings-label-title">Curriculum Visibility</span>
+                                        </div>
+                                        <div className="settings-col-input radio-row">
+                                            <label className="radio-option">
+                                                <input type="radio" checked={settingsData.curriculumVisibility === 'always'} onChange={() => setSettingsData({ ...settingsData, curriculumVisibility: 'always' })} />
+                                                <span>Always Visible</span>
+                                            </label>
+                                            <label className="radio-option">
+                                                <input type="radio" checked={settingsData.curriculumVisibility === 'enrollers'} onChange={() => setSettingsData({ ...settingsData, curriculumVisibility: 'enrollers' })} />
+                                                <span>Only Visible to Enrollers</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div className="switch-container">
+                                        <div className="switch-label">Allow Reviews</div>
+                                        <label className="switch">
+                                            <input type="checkbox" checked={settingsData.allowReviews} onChange={(e) => setSettingsData({ ...settingsData, allowReviews: e.target.checked })} />
+                                            <span className="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div className="switch-container">
+                                        <div className="switch-label">Allow Reviews After Completion <HelpCircle size={14} color="#94a3b8" /></div>
+                                        <label className="switch">
+                                            <input type="checkbox" checked={settingsData.allowReviewsAfterCompletion} onChange={(e) => setSettingsData({ ...settingsData, allowReviewsAfterCompletion: e.target.checked })} />
+                                            <span className="slider"></span>
+                                        </label>
+                                    </div>
+
+                                    <div className="switch-container">
+                                        <div className="switch-label">Welcome Message to Learner <HelpCircle size={14} color="#94a3b8" /></div>
+                                        <label className="switch">
+                                            <input type="checkbox" checked={settingsData.welcomeMessage} onChange={(e) => setSettingsData({ ...settingsData, welcomeMessage: e.target.checked })} />
+                                            <span className="slider"></span>
+                                        </label>
                                     </div>
                                 </div>
-                            </div>
+                            )}
+
+                            {activeSettingsTab === 'content_drip' && (
+                                <div className="settings-tab-content anim-fade-in">
+                                    <div className="settings-form-row-vertical">
+                                        <div className="settings-col-label">
+                                            <span className="settings-label-title">Flow type:</span>
+                                        </div>
+                                        <div className="settings-col-input radio-group">
+                                            <label className="radio-option">
+                                                <input type="radio" name="drip" checked={settingsData.contentDripType === 'free'} onChange={() => setSettingsData({ ...settingsData, contentDripType: 'free' })} />
+                                                <span>Free <HelpCircle size={14} color="#94a3b8" /></span>
+                                            </label>
+                                            <label className="radio-option">
+                                                <input type="radio" name="drip" checked={settingsData.contentDripType === 'sequential'} onChange={() => setSettingsData({ ...settingsData, contentDripType: 'sequential' })} />
+                                                <span>Sequential <HelpCircle size={14} color="#94a3b8" /></span>
+                                            </label>
+                                            <label className="radio-option disabled" title="Premium Feature">
+                                                <input type="radio" name="drip" disabled />
+                                                <span>Date Selection 🔒</span>
+                                            </label>
+                                            <label className="radio-option disabled" title="Premium Feature">
+                                                <input type="radio" name="drip" disabled />
+                                                <span>X Days From Enrollment 🔒</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeSettingsTab === 'certificate' && (
+                                <div className="settings-tab-content anim-fade-in">
+                                    <div className="switch-container" style={{ borderBottom: 'none' }}>
+                                        <div className="switch-label">Enable Certificate <HelpCircle size={14} color="#94a3b8" /></div>
+                                        <label className="switch">
+                                            <input type="checkbox" checked={settingsData.enableCertificate} onChange={(e) => setSettingsData({ ...settingsData, enableCertificate: e.target.checked })} />
+                                            <span className="slider"></span>
+                                        </label>
+                                    </div>
+                                    {settingsData.enableCertificate && (
+                                        <div className="certificate-builder-teaser">
+                                            <p>El Constructor de Certificados visual se activará aquí.</p>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {['pricing', 'group_pricing', 'general', 'schedule'].includes(activeSettingsTab) && (
+                                <div className="settings-tab-content neutral-state">
+                                    <Settings size={32} color="#cbd5e1" />
+                                    <p>Configuraciones de {activeSettingsTab.replace('_', ' ')} estarán aquí.</p>
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 )}
@@ -577,22 +685,48 @@ const CourseEditor = () => {
                 .pillar-select, .pillar-input-sm { width: 100%; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; outline: none; }
                 .pillar-input-number { width: 60px; padding: 0.6rem; border: 1px solid #e2e8f0; border-radius: 6px; text-align: center; outline: none; }
 
-                /* Settings Layout */
+                /* Settings Layout (Masteriyo Style) */
                 .settings-master-detail-layout {
                     max-width: 1000px; margin: 0 auto; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;
                     display: grid; grid-template-columns: 240px 1fr; min-height: 500px; overflow: hidden;
                 }
-                .settings-nav-master { background: #f8fafc; border-right: 1px solid #e2e8f0; padding: 1rem 0; }
+                .settings-nav-master { background: #f8fafc; border-right: 1px solid #e2e8f0; padding: 2rem 0; }
                 .nav-master-item {
-                    width: 100%; text-align: left; padding: 1rem 1.5rem; border: none; background: transparent;
-                    color: #64748b; font-weight: 600; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s;
+                    width: 100%; text-align: left; padding: 0.8rem 1.5rem; border: none; background: transparent;
+                    color: #475569; font-weight: 500; font-size: 14px; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s;
+                    margin-bottom: 2px;
                 }
-                .nav-master-item.active { background: #fff; color: #9333ea; border-left-color: #9333ea; }
-                .settings-detail-panel { padding: 2.5rem; }
-                .detail-section h3 { margin-bottom: 2rem; font-size: 1.25rem; font-weight: 800; color: #1e293b; border-bottom: 2px solid #f1f5f9; padding-bottom: 1rem; }
-                .form-row { display: flex; align-items: center; gap: 2rem; margin-bottom: 1.5rem; }
-                .form-row label { font-weight: 700; color: #475569; min-width: 160px; font-size: 14px; }
-                .input-group-duration { display: flex; align-items: center; gap: 1rem; color: #64748b; font-size: 13px; }
+                .nav-master-item:hover { background: #f1f5f9; color: #1e293b; }
+                .nav-master-item.active { background: #eff6ff; color: #2563eb; border-left-color: #2563eb; font-weight: 600; }
+                
+                .settings-detail-panel { padding: 3rem; }
+                .settings-tab-content { display: flex; flex-direction: column; }
+                
+                .settings-form-row { display: flex; align-items: flex-start; margin-bottom: 2rem; border-bottom: 1px solid #f1f5f9; padding-bottom: 1.5rem; }
+                .settings-form-row-vertical { display: flex; align-items: flex-start; gap: 4rem; margin-bottom: 2rem; }
+                .settings-col-label { width: 180px; flex-shrink: 0; }
+                .settings-label-title { font-weight: 600; color: #475569; font-size: 14px; }
+                .settings-col-input { flex: 1; }
+                
+                .radio-row { display: flex; gap: 2rem; align-items: center; }
+                .radio-group { display: flex; flex-direction: column; gap: 1rem; }
+                .radio-option { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; color: #334155; cursor: pointer; }
+                .radio-option input[type="radio"] { accent-color: #2563eb; width: 16px; height: 16px; cursor: pointer; }
+                .radio-option.disabled { opacity: 0.4; cursor: not-allowed; }
+                .radio-option.disabled input { cursor: not-allowed; }
+                
+                .switch-container { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; border-bottom: 1px solid #f1f5f9; }
+                .switch-label { font-weight: 600; color: #475569; font-size: 14px; display: flex; align-items: center; gap: 0.5rem; }
+                .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+                .switch input { opacity: 0; width: 0; height: 0; }
+                .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .3s; border-radius: 24px; }
+                .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+                input:checked + .slider { background-color: #2563eb; }
+                input:focus + .slider { box-shadow: 0 0 1px #2563eb; }
+                input:checked + .slider:before { transform: translateX(20px); }
+                
+                .neutral-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 300px; color: #94a3b8; font-weight: 500; }
+                .certificate-builder-teaser { margin-top: 1rem; padding: 1.5rem; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; text-align: center; color: #64748b; font-size: 13px; }
 
                 .builder-canvas-wrapper { max-width: 1000px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; }
 

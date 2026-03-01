@@ -383,6 +383,26 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ---
 
+## [2026-03-01] - Configuraciones Avanzadas del Curso (Phase 13)
+
+### Estado Actual:
+- **Actividad:** Implementación de la pestaña "Settings" estilo Masteriyo con opciones de UI avanzadas (toggles/radios).
+- **Fase:** Advanced Course Settings Tab (Phase 13) - COMPLETADA
+
+### Acciones Realizadas:
+1.  **Frontend (`CourseEditor.jsx`):** 
+    - Implementado sub-menú Maestro-Detalle vertical.
+    - Componentes de UI modernos configurados (Toggles switches, radio buttons personalizados).
+    - Creadas pestañas específicas: **Display** (Reseñas, Bienvenida), **Content Drip** (Programación de contenido secuencial/fechas) y **Certificate** (Generador de certificados).
+2.  **Backend (`CourseController.php`):** 
+    - Se agregó lógica para guardar y recuperar todos estos nuevos ajustes bajo un solo meta clave en la DB llamado `_academia_course_settings` (en formato JSON serializado).
+3.  **Sincronización:** Los ajustes son cargados exitosamente al entrar al editor y se guardan como parte del JSON Payload principal junto al contenido del curso al presionar "Guardar Cambios".
+
+### Git Backup:
+- **Hash/Commit:** Implementada Phase 13: Ajustes avanzados (Settings) con submenú estilo Masteriyo y sincronización DB.
+
+---
+
 ## [2026-03-01] - Sincronización Avanzada Backend: Lecciones como CPT (Phase 12.4)
 
 ### Estado Actual:

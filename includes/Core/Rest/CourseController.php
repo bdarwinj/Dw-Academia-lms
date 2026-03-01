@@ -123,6 +123,7 @@ class CourseController extends WP_REST_Controller {
         $cat_names = $categories && !is_wp_error($categories) ? wp_list_pluck($categories, 'name') : [];
 
         $builder_data = get_post_meta($post_id, '_academia_builder_layout', true) ?: null;
+        $settings_data = get_post_meta($post_id, '_academia_course_settings', true) ?: null;
 
         $course_data = [
             'id'          => $post_id,
@@ -134,7 +135,8 @@ class CourseController extends WP_REST_Controller {
             'videoUrl'    => $video_url,
             'categories'  => $cat_names,
             'thumbnail'   => get_the_post_thumbnail_url($post_id, 'full') ?: '',
-            'builder_data'=> $builder_data
+            'builder_data'=> $builder_data,
+            'settings_data'=> $settings_data
         ];
 
         return rest_ensure_response($course_data);
@@ -202,6 +204,10 @@ class CourseController extends WP_REST_Controller {
 
         if (isset($params['builder_data'])) {
             update_post_meta($post_id, '_academia_builder_layout', $params['builder_data']);
+        }
+
+        if (isset($params['settings_data'])) {
+            update_post_meta($post_id, '_academia_course_settings', $params['settings_data']);
         }
     }
 
