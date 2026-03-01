@@ -46,6 +46,12 @@ class Menu {
 			return;
 		}
 
+		// Limpiar scripts conflictivos de WooCommerce y WP Core UI
+		wp_dequeue_script( 'wc-admin-app' );
+		wp_dequeue_script( 'wc-settings' );
+		wp_dequeue_script( 'wc-admin-layout' );
+		wp_dequeue_script( 'wp-embed' );
+
 		// En un entorno de producción leemos el JS compilado
 		// Por simplicidad en este paso, registramos el JS hardcodeado de Vite build 
 		// (Idealmente se leería del manifest.json)

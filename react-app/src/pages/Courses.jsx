@@ -13,6 +13,7 @@ import {
     ExternalLink
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { buildApiUrl } from '../utils/api';
 
 const CourseList = () => {
     const [courses, setCourses] = useState([]);
@@ -23,7 +24,8 @@ const CourseList = () => {
     const fetchCourses = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/courses?status=${status}&search=${search}`, {
+            const url = buildApiUrl('academia-lms/v1/courses', { status, search });
+            const response = await fetch(url, {
                 headers: {
                     'X-WP-Nonce': window.academiaLmsData.nonce
                 }

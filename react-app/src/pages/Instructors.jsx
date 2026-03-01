@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import Modal from '../components/common/Modal';
 import SlideOver from '../components/common/SlideOver';
+import { buildApiUrl } from '../utils/api';
 
 const InstructorList = () => {
     const [instructors, setInstructors] = useState([]);
@@ -40,7 +41,8 @@ const InstructorList = () => {
     const fetchInstructors = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/users/instructors?search=${search}`, {
+            const url = buildApiUrl('academia-lms/v1/users/instructors', { search });
+            const response = await fetch(url, {
                 headers: {
                     'X-WP-Nonce': window.academiaLmsData.nonce
                 }
@@ -67,7 +69,8 @@ const InstructorList = () => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/users`, {
+            const url = buildApiUrl('academia-lms/v1/users');
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +97,8 @@ const InstructorList = () => {
         if (!confirm("¿Estás seguro de eliminar a este profesor?")) return;
 
         try {
-            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/users/${id}`, {
+            const url = buildApiUrl(`academia-lms/v1/users/${id}`);
+            const response = await fetch(url, {
                 method: 'DELETE',
                 headers: {
                     'X-WP-Nonce': window.academiaLmsData.nonce
@@ -113,7 +117,8 @@ const InstructorList = () => {
         setIsProfileOpen(true);
         setLoadingCourses(true);
         try {
-            const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/users/${instructor.id}/courses`, {
+            const url = buildApiUrl(`academia-lms/v1/users/${instructor.id}/courses`);
+            const response = await fetch(url, {
                 headers: { 'X-WP-Nonce': window.academiaLmsData.nonce }
             });
             const data = await response.json();
