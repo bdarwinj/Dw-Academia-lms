@@ -56,6 +56,7 @@ class Plugin {
 		if ( is_admin() ) {
 			\AcademiaLms\Admin\Menu::init();
 			\AcademiaLms\Admin\Metaboxes\Leccion::init();
+			\AcademiaLms\Admin\Metaboxes\Cuestionario::init();
 		}
 
 		// Registrar Hook de Activación (Migraciones DB)

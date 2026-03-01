@@ -49,5 +49,21 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 2.  **Soporte Gutenberg:** Se confirmó y se está aprovechando la API REST nativa (`show_in_rest = true`) en los CPTs para que el instructor redacte la teoría de la lección usando la experiencia moderna de Gutenberg.
 
 ### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 2.3):
-- [ ] Construir la estructura de datos (CPT o tablas) para el Motor de Cuestionarios.
-- [ ] Programar la interfaz para añadir Preguntas y Opciones al Cuestionario.
+- [x] Construir la estructura de datos (CPT o tablas) para el Motor de Cuestionarios.
+- [x] Programar la interfaz para añadir Preguntas y Opciones al Cuestionario.
+
+---
+
+## [2026-03-01] - Motor de Cuestionarios (Exámenes)
+
+### Estado Actual:
+- **Fase:** Motor de Cuestionarios (Phase 2.3) - COMPLETADA
+- **Actividad:** Programación del panel de control interno para crear y gestionar preguntas con sus respectivas múltiples opciones de respuesta dentro de un Cuestionario.
+
+### Resumen de Cambios:
+1.  **Creador de Exámenes:** Construida la clase `AcademiaLms\Admin\Metaboxes\Cuestionario` la cual implementa un Metabox interactivo utilizando jQuery. Este interactúa como un campo "Repeater".
+2.  **Serialización JSON:** El instructor ahora puede dinámicamente añadir/quitar preguntas, escribir opciones A/B/C/D y elegir la correcta. El sistema de fondo procesa todo este array, lo serializa en JSON y lo guarda limpiamente en la metadata `_academia_quiz_questions` del cuestionario, validando el contenido.
+
+### Tareas Pendientes Inmediatas (Siguiente Paso - Fase 3.1):
+- [ ] Construir la estructura `templates/` para sobre-escribir diseños del frontend.
+- [ ] Crear el Aula Virtual (Interfaz libre de distracciones con barra lateral asíncrona).
