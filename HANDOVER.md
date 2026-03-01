@@ -252,6 +252,22 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Git Backup:
 - **Hash/Commit:** Implementada Subfase 8.1. El listado de cursos ahora es una SPA moderna y rápida.
 
+---
+
+## [2026-03-01] - Corrección de Error: Critical Error (REST API Routes)
+
+### Estado Actual:
+- **Fase:** Mantenimiento (Phase 8.1 Post-Deploy) - SOLUCIONADO
+- **Actividad:** Resolución de un *Fatal Error* de WordPress en la pantalla de administración.
+
+### Detalles de la Corrección:
+1.  **Diagnóstico:** La compilación anterior incluía el registro de rutas de la API REST (`StatsController` y `CourseController`) directamente durante el hook `plugins_loaded`. Esto era demasiado temprano en el ciclo de vida de WordPress y causaba que la clase `WP_Site_Health` fallara (Critical Error detallado en la captura del usuario).
+2.  **Solución:** Se editó el archivo `includes/Core/Plugin.php` para envolver la inicialización y registro de las rutas REST explícitamente dentro del hook `rest_api_init`.
+3.  **Resultado:** El error fatal ha desaparecido y el panel vuelve a estar 100% operativo.
+
+### Git Backup:
+- **Hash/Commit:** Hotfix aplicado y respaldado en Git para el registro temprano de la API REST.
+
 
 
 
