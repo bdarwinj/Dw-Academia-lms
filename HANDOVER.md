@@ -268,6 +268,30 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Git Backup:
 - **Hash/Commit:** Hotfix aplicado y respaldado en Git para el registro temprano de la API REST.
 
+---
+
+## [2026-03-01] - Ejecución Fase 8.2: Paneles de Estudiantes y Profesores en React
+
+### Estado Actual:
+- **Fase:** DataGrids en React (Phase 8) - COMPLETADA SUBFASE 8.2
+- **Actividad:** Creación de las interfaces avanzadas para la gestión de alumnos y docentes.
+
+### Acciones Realizadas:
+1.  **Backend (User API):** 
+    *   Desarrollado `UserController.php` con endpoints específicos para listar Estudiantes (filtrados por matrículas) e Instructores (filtrados por autoría de cursos).
+    *   Integrada la lógica de conteo dinámico de cursos por usuario.
+2.  **Frontend (DataGrids):**
+    *   Creado `Students.jsx`: Listado con avatares, conteo de inscripciones y fechas de registro.
+    *   Creado `Instructors.jsx`: Listado especializado para el equipo docente con visualización de cursos creados.
+    *   Actualizado el enrutador principal en `App.jsx` para habilitar estas nuevas secciones.
+3.  **UI/UX:**
+    *   Mantenida la consistencia visual premium con el listado de cursos.
+    *   Implementada búsqueda reactiva para encontrar usuarios rápidamente por nombre o email.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Phase 8.2. Los paneles de Estudiantes y Profesores ahora son 100% SPA.
+
+
 
 
 

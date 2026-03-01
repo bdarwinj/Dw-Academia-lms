@@ -54,6 +54,7 @@ class Plugin {
 		add_action( 'rest_api_init', function() {
 			(new \AcademiaLms\Core\Rest\StatsController())->register_routes();
 			(new \AcademiaLms\Core\Rest\CourseController())->register_routes();
+			(new \AcademiaLms\Core\Rest\UserController())->register_routes();
 		});
 
 		// Inicializar Panel de Administración
