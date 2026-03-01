@@ -581,10 +581,69 @@ const CourseEditor = () => {
                                 </div>
                             )}
 
-                            {['pricing', 'group_pricing', 'general', 'schedule'].includes(activeSettingsTab) && (
+                            {activeSettingsTab === 'pricing' && (
+                                <div className="settings-tab-content anim-fade-in">
+                                    <div className="settings-form-row" style={{ borderBottom: 'none' }}>
+                                        <div className="settings-col-label">
+                                            <span className="settings-label-title">Precio del Curso</span>
+                                        </div>
+                                        <div className="settings-col-input">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                <span style={{ fontWeight: 600, color: '#475569', fontSize: '18px' }}>$</span>
+                                                <input
+                                                    type="number"
+                                                    className="pillar-input-sm"
+                                                    style={{ width: '150px', fontSize: '16px' }}
+                                                    value={price}
+                                                    onChange={e => setPrice(e.target.value)}
+                                                    placeholder="0.00"
+                                                />
+                                            </div>
+                                            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '0.5rem' }}>
+                                                Deja en 0 para que el curso sea gratuito.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {activeSettingsTab === 'general' && (
+                                <div className="settings-tab-content anim-fade-in">
+                                    <div className="settings-form-row">
+                                        <div className="settings-col-label">
+                                            <span className="settings-label-title">Instructor Principal</span>
+                                        </div>
+                                        <div className="settings-col-input">
+                                            <input type="text" className="pillar-input-sm" style={{ width: '250px' }} disabled value="darwin" />
+                                            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '0.5rem' }}>
+                                                El autor actual del curso.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="settings-form-row" style={{ borderBottom: 'none' }}>
+                                        <div className="settings-col-label">
+                                            <span className="settings-label-title">Duración Total</span>
+                                        </div>
+                                        <div className="settings-col-input">
+                                            <div className="input-group-duration" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', color: '#64748b', fontSize: '14px' }}>
+                                                <input type="number" placeholder="0" className="pillar-input-number" style={{ width: '70px', padding: '0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0', textAlign: 'center' }} />
+                                                <span>Horas</span>
+                                                <input type="number" placeholder="0" className="pillar-input-number" style={{ width: '70px', padding: '0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0', textAlign: 'center', marginLeft: '1rem' }} />
+                                                <span>Minutos</span>
+                                            </div>
+                                            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '0.5rem' }}>
+                                                Duración estimada para completar el curso (opcional).
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {['group_pricing', 'schedule'].includes(activeSettingsTab) && (
                                 <div className="settings-tab-content neutral-state">
-                                    <Settings size={32} color="#cbd5e1" />
-                                    <p>Configuraciones de {activeSettingsTab.replace('_', ' ')} estarán aquí.</p>
+                                    <Settings size={32} color="#cbd5e1" style={{ marginBottom: '1rem' }} />
+                                    <p>Configuraciones de {activeSettingsTab.replace('_', ' ')} estarán disponibles pronto.</p>
+                                    <span style={{ fontSize: '12px', color: '#94a3b8', background: '#f8fafc', padding: '4px 12px', borderRadius: '12px', marginTop: '0.5rem' }}>Función Pro</span>
                                 </div>
                             )}
 
