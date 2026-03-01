@@ -209,3 +209,41 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 ### Git Backup:
 - **Hash/Commit:** Cambios recientes (Rebranding y Estructura SPA) han sido respaldados en Git con éxito.
 
+---
+
+## [2026-03-01] - Corrección de Error: Pantalla en Blanco en el Dashboard
+
+### Estado Actual:
+- **Fase:** Mantenimiento y Estabilidad (Phase 7) - SOLUCIONADO
+- **Actividad:** Resolución de bug crítico que causaba que el nuevo panel SPA se mostrara en blanco.
+
+### Detalles de la Corrección:
+1.  **Build de React Fallido:** Se identificó que la compilación de Vite estaba fallando debido a un nombre de icono inexistente (`Tool` en `lucide-react`) y un error de escritura en el estilo del Dashboard (`justifyCenter` en lugar de `justifyContent`).
+2.  **Rutas de Dependencias:** Se corrigió un error donde algunas dependencias se habían instalado en una carpeta errónea. Ahora todo reside correctamente en `react-app`.
+3.  **Compilación Exitosa:** Se forzó un nuevo build (`npm run build`) y se verificó la generación de los archivos `main.js` y `main.css` en `assets/admin/`.
+4.  **Confirmación de Montaje:** Se validó que el ID de montaje en PHP (`academia-admin-app`) coincida exactamente con el de la aplicación React.
+
+### Git Backup:
+- **Hash/Commit:** Fix aplicado y respaldado en Git. El árbol de trabajo está limpio y funcional.
+
+### Tareas Pendientes Inmediatas:
+- Iniciar la **Fase 8: DataGrids en React** para migrar el listado de cursos.
+
+---
+
+## [2026-03-01] - Ejecución Fase 7.3: Datos Dinámicos en el Dashboard
+
+### Estado Actual:
+- **Fase:** Rebranding y SPA Base (Phase 7) - COMPLETADA
+- **Actividad:** Conexión del Dashboard administrativo con datos reales del servidor mediante una nueva API REST.
+
+### Acciones Realizadas:
+1.  **StatsController (PHP):** Creado un nuevo controlador de API REST (`StatsController.php`) que consulta la base de datos para obtener el conteo de cursos, lecciones y matrículas activas.
+2.  **Dashboard (React):** Actualizado el componente `Dashboard.jsx` para realizar peticiones asíncronas (`fetch`) al cargar, mostrando estados de carga ("...") y refrescando los valores reales automáticamente.
+3.  **Seguridad:** Implementada validación de permisos (`manage_options`) y Nonce nativo de WordPress para proteger los datos de la academia.
+
+### Git Backup:
+- **Hash/Commit:** Implementada Phase 7.3 y respaldado en Git. El Dashboard ahora es 100% dinámico.
+
+
+

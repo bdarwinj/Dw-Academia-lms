@@ -51,6 +51,7 @@ class Plugin {
 		// Inicializar API REST Básico
 		\AcademiaLms\API\Base::init();
 		\AcademiaLms\API\Builder::init();
+		(new \AcademiaLms\Core\Rest\StatsController())->register_routes();
 
 		// Inicializar Panel de Administración
 		if ( is_admin() ) {

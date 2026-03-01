@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BarChart2, BookOpen, Users, GraduationCap } from 'lucide-react';
 
 const StatCard = ({ label, value, icon: Icon, color }) => (
@@ -19,6 +19,34 @@ const StatCard = ({ label, value, icon: Icon, color }) => (
 );
 
 const Dashboard = () => {
+    const [stats, setStats] = useState({
+        courses: 0,
+        enrollments: 0,
+        lessons: 0,
+        questions: 0
+    });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const response = await fetch(`${window.academiaLmsData.root}academia-lms/v1/stats/overview`, {
+                    headers: {
+                        'X-WP-Nonce': window.academiaLmsData.nonce
+                    }
+                });
+                const data = await response.json();
+                setStats(data);
+            } catch (error) {
+                console.error("Error fetching stats:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStats();
+    }, []);
+
     return (
         <div className="dashboard-page">
             <div style={{ marginBottom: '2rem' }}>
@@ -32,10 +60,10 @@ const Dashboard = () => {
                 gap: '1.5rem',
                 marginBottom: '2.5rem'
             }}>
-                <StatCard label="Total Cursos" value="0" icon={BookOpen} color="#6366f1" />
-                <StatCard label="Cursos Enrolados" value="0" icon={GraduationCap} color="#ec4899" />
-                <StatCard label="Total Lecciones" value="0" icon={BarChart2} color="#3b82f6" />
-                <StatCard label="Preguntas" value="0" icon={Users} color="#f59e0b" />
+                <StatCard label="Total Cursos" value={loading ? '...' : stats.courses} icon={BookOpen} color="#6366f1" />
+                <StatCard label="Cursos Enrolados" value={loading ? '...' : stats.enrollments} icon={GraduationCap} color="#ec4899" />
+                <StatCard label="Total Lecciones" value={loading ? '...' : stats.lessons} icon={BarChart2} color="#3b82f6" />
+                <StatCard label="Preguntas" value={loading ? '...' : stats.questions} icon={Users} color="#f59e0b" />
             </div>
 
             <div className="academia-card" style={{ height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
