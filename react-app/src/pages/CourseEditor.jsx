@@ -50,7 +50,15 @@ const CourseEditor = () => {
         allowReviewsAfterCompletion: true,
         welcomeMessage: false,
         contentDripType: 'free', // free | sequential | date | days
-        enableCertificate: false
+        enableCertificate: false,
+        durationHours: 0,
+        durationMinutes: 0,
+        courseBadge: '',
+        maximumStudents: 'no_limit',
+        staticEnrolledCount: 0,
+        coursePassword: '',
+        allowCourseRetake: false,
+        restrictContentDuringQuiz: false
     });
 
     const tabs = [
@@ -608,32 +616,128 @@ const CourseEditor = () => {
                             )}
 
                             {activeSettingsTab === 'general' && (
-                                <div className="settings-tab-content anim-fade-in">
-                                    <div className="settings-form-row">
-                                        <div className="settings-col-label">
-                                            <span className="settings-label-title">Instructor Principal</span>
+                                <div className="settings-tab-content anim-fade-in" style={{ padding: '0', background: 'transparent', border: 'none' }}>
+
+                                    <div className="settings-section" style={{ background: '#fff', padding: '2rem', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '1.5rem' }}>
+                                        <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#334155', marginBottom: '1.5rem' }}>Course Basics</h3>
+
+                                        <div className="settings-form-row">
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Instructor Principal</span>
+                                            </div>
+                                            <div className="settings-col-input">
+                                                <input type="text" className="pillar-input-sm" style={{ width: '100%' }} disabled value="darwin" />
+                                            </div>
                                         </div>
-                                        <div className="settings-col-input">
-                                            <input type="text" className="pillar-input-sm" style={{ width: '250px' }} disabled value="darwin" />
-                                            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '0.5rem' }}>
-                                                El autor actual del curso.
-                                            </p>
+
+                                        <div className="settings-form-row">
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Instructores Adicionales <span title="Función Premium">🔒</span></span>
+                                            </div>
+                                            <div className="settings-col-input">
+                                                <select className="pillar-input-sm" style={{ width: '100%', backgroundColor: '#f8fafc', color: '#94a3b8' }} disabled>
+                                                    <option>Seleccionar Instructores</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {/* You can map this to the global 'level' state or keep it in settings */}
+                                        <div className="settings-form-row">
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Dificultad <HelpCircle size={14} color="#94a3b8" /></span>
+                                            </div>
+                                            <div className="settings-col-input">
+                                                <select className="pillar-input-sm" style={{ width: '100%' }} value={level} onChange={(e) => setLevel(e.target.value)}>
+                                                    <option value="beginner">Principiante</option>
+                                                    <option value="intermediate">Intermedio</option>
+                                                    <option value="expert">Experto</option>
+                                                    <option value="all">Todos los Niveles</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div className="settings-form-row">
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Duración</span>
+                                            </div>
+                                            <div className="settings-col-input">
+                                                <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', color: '#64748b' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <input type="number" className="pillar-input-sm" style={{ width: '80px', textAlign: 'center' }} value={settingsData.durationHours} onChange={(e) => setSettingsData({ ...settingsData, durationHours: e.target.value })} />
+                                                        <span>Horas</span>
+                                                    </div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                                        <input type="number" className="pillar-input-sm" style={{ width: '80px', textAlign: 'center' }} value={settingsData.durationMinutes} onChange={(e) => setSettingsData({ ...settingsData, durationMinutes: e.target.value })} />
+                                                        <span>Minutos</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="settings-form-row" style={{ borderBottom: 'none', paddingBottom: 0 }}>
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Insignia del Curso <HelpCircle size={14} color="#94a3b8" /></span>
+                                            </div>
+                                            <div className="settings-col-input">
+                                                <input type="text" className="pillar-input-sm" style={{ width: '100%' }} placeholder="Configura una insignia para el curso" value={settingsData.courseBadge} onChange={(e) => setSettingsData({ ...settingsData, courseBadge: e.target.value })} />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="settings-form-row" style={{ borderBottom: 'none' }}>
-                                        <div className="settings-col-label">
-                                            <span className="settings-label-title">Duración Total</span>
-                                        </div>
-                                        <div className="settings-col-input">
-                                            <div className="input-group-duration" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', color: '#64748b', fontSize: '14px' }}>
-                                                <input type="number" placeholder="0" className="pillar-input-number" style={{ width: '70px', padding: '0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0', textAlign: 'center' }} />
-                                                <span>Horas</span>
-                                                <input type="number" placeholder="0" className="pillar-input-number" style={{ width: '70px', padding: '0.5rem', borderRadius: '6px', border: '1px solid #e2e8f0', textAlign: 'center', marginLeft: '1rem' }} />
-                                                <span>Minutos</span>
+
+                                    <div className="settings-section" style={{ background: '#fff', padding: '2rem', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                                        <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#334155', marginBottom: '1.5rem' }}>Access & Restrictions</h3>
+
+                                        <div className="settings-form-row">
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Número Máximo de Estudiantes</span>
                                             </div>
-                                            <p style={{ fontSize: '12px', color: '#94a3b8', marginTop: '0.5rem' }}>
-                                                Duración estimada para completar el curso (opcional).
-                                            </p>
+                                            <div className="settings-col-input radio-row">
+                                                <label className="radio-option">
+                                                    <input type="radio" checked={settingsData.maximumStudents === 'no_limit'} onChange={() => setSettingsData({ ...settingsData, maximumStudents: 'no_limit' })} />
+                                                    <span>Sin Límite</span>
+                                                </label>
+                                                <label className="radio-option">
+                                                    <input type="radio" checked={settingsData.maximumStudents === 'limit'} onChange={() => setSettingsData({ ...settingsData, maximumStudents: 'limit' })} />
+                                                    <span>Límite</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div className="settings-form-row">
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Matriculados Estáticos <HelpCircle size={14} color="#94a3b8" /></span>
+                                            </div>
+                                            <div className="settings-col-input">
+                                                <input type="number" className="pillar-input-sm" style={{ width: '100%' }} value={settingsData.staticEnrolledCount} onChange={(e) => setSettingsData({ ...settingsData, staticEnrolledCount: e.target.value })} />
+                                            </div>
+                                        </div>
+
+                                        <div className="settings-form-row">
+                                            <div className="settings-col-label">
+                                                <span className="settings-label-title">Contraseña <HelpCircle size={14} color="#94a3b8" /></span>
+                                            </div>
+                                            <div className="settings-col-input">
+                                                <div style={{ position: 'relative' }}>
+                                                    <input type="password" className="pillar-input-sm" style={{ width: '100%', paddingRight: '2rem' }} placeholder="Configura la contraseña para el curso" value={settingsData.coursePassword} onChange={(e) => setSettingsData({ ...settingsData, coursePassword: e.target.value })} />
+                                                    <Eye size={16} color="#94a3b8" style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="switch-container">
+                                            <div className="switch-label">Permitir Rehacer Curso <HelpCircle size={14} color="#94a3b8" /></div>
+                                            <label className="switch">
+                                                <input type="checkbox" checked={settingsData.allowCourseRetake} onChange={(e) => setSettingsData({ ...settingsData, allowCourseRetake: e.target.checked })} />
+                                                <span className="slider"></span>
+                                            </label>
+                                        </div>
+
+                                        <div className="switch-container" style={{ borderBottom: 'none' }}>
+                                            <div className="switch-label">Restringir Contenido Durante el Quiz <HelpCircle size={14} color="#94a3b8" /></div>
+                                            <label className="switch">
+                                                <input type="checkbox" checked={settingsData.restrictContentDuringQuiz} onChange={(e) => setSettingsData({ ...settingsData, restrictContentDuringQuiz: e.target.checked })} />
+                                                <span className="slider"></span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
