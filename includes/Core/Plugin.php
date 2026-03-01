@@ -48,6 +48,14 @@ class Plugin {
 		\AcademiaLms\PostTypes\Lecciones::init();
 		\AcademiaLms\PostTypes\Cuestionarios::init();
 
+		// Inicializar API REST Básico
+		\AcademiaLms\API\Base::init();
+
+		// Inicializar Panel de Administración
+		if ( is_admin() ) {
+			\AcademiaLms\Admin\Menu::init();
+		}
+
 		// Registrar Hook de Activación (Migraciones DB)
 		register_activation_hook( ACADEMIA_LMS_FILE, [ '\AcademiaLms\Database\Migrations', 'init' ] );
 	}

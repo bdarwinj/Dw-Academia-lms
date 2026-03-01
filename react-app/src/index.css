@@ -1,0 +1,30 @@
+.academia-admin-wrap {
+    margin-top: 20px;
+}
+
+.academia-admin-wrap h1 {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.academia-admin-wrap .card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+.academia-admin-wrap button {
+    background: #2271b1;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.academia-admin-wrap button:hover {
+    background: #135e96;
+}
