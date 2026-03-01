@@ -1,16 +1,23 @@
-import React from 'react'
-import CourseBuilder from './components/CourseBuilder/CourseBuilder'
-import './index.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import AppShell from './components/layout/AppShell';
+import Dashboard from './pages/Dashboard';
 
-function App() {
+const App = () => {
     return (
-        <div className="academia-admin-wrap wrap">
-            <h1>Academia LMS Dashboard</h1>
-            <p>Bienvenido al panel de administración de Academia LMS.</p>
+        <Router>
+            <AppShell>
+                <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/courses" element={<div>Página de Cursos (En construcción)</div>} />
+                    <Route path="/students" element={<div>Página de Estudiantes (En construcción)</div>} />
+                    <Route path="/instructors" element={<div>Página de Instructores (En construcción)</div>} />
+                    <Route path="/settings" element={<div>Ajustes (En construcción)</div>} />
+                    {/* Añadir más rutas según el roadmap */}
+                </Routes>
+            </AppShell>
+        </Router>
+    );
+};
 
-            <CourseBuilder />
-        </div>
-    )
-}
-
-export default App
+export default App;

@@ -18,24 +18,24 @@ class Menu {
 	/**
 	 * Register the main admin menu.
 	 */
-	public static function registrar_menu() {
-		add_menu_page(
-			__( 'Academia LMS', 'academia-lms' ),
-			__( 'Academia LMS', 'academia-lms' ),
-			'manage_options',
-			'academia-lms',
-			[ __CLASS__, 'render_app_container' ],
-			'dashicons-welcome-learn-more',
-			29
-		);
-	}
+    public static function registrar_menu() {
+        add_menu_page(
+            __( 'Dw Bolivar', 'academia-lms' ),
+            __( 'Dw Bolivar', 'academia-lms' ),
+            'manage_options',
+            'academia-lms',
+            [ __CLASS__, 'render_app_container' ],
+            'dashicons-welcome-learn-more',
+            29
+        );
+    }
 
 	/**
 	 * Render the div container where React will mount.
 	 */
-	public static function render_app_container() {
-		echo '<div id="academia-lms-react-app"></div>';
-	}
+    public static function render_app_container() {
+        echo '<div id="academia-admin-app"></div>';
+    }
 
 	/**
 	 * Enqueue React build scripts.

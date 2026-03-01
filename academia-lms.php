@@ -1,13 +1,12 @@
 <?php
 /**
- * Plugin Name:       Academia LMS
- * Plugin URI:        https://example.com/academia-lms
- * Description:       Un sistema de gestión de aprendizaje moderno, rápido y nativo en español para WordPress.
+ * Plugin Name: Dw Bolivar Academia lms
+ * Plugin URI:  https://www.youtube.com/@bdarwinj
+ * Description: Sistema de Gestión de Aprendizaje (LMS) premium, inmersivo y de alto rendimiento. Diseñado por Darwin j. Bolivar con asistencia de IA.
  * Version:           1.0.0
- * Author:            Academia Team
- * Author URI:        https://example.com
- * License:           GPL-3.0+
- * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
+ * Author:      Darwin j. Bolivar
+ * Author URI:  https://www.youtube.com/@bdarwinj
+ * License:     GPL2
  * Text Domain:       academia-lms
  * Domain Path:       /languages
  */

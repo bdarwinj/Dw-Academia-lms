@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-import './index.css'
+import './assets/css/admin.css'
 
-ReactDOM.createRoot(document.getElementById('academia-lms-react-app')).render(
+ReactDOM.createRoot(document.getElementById('academia-admin-app')).render(
     <React.StrictMode>
         <App />
-    </React.StrictMode>
+    </React.StrictMode>,
 )
