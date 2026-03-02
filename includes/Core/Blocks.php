@@ -37,6 +37,13 @@ class Blocks {
      * Register individual blocks.
      */
     public static function register_blocks() {
+        // Register Search Bar Block
+        register_block_type( 'academia-lms/search-bar', [
+            'editor_script' => 'academia-blocks-editor',
+            'editor_style'  => 'academia-blocks-editor-style',
+            'style'         => 'academia-blocks-style',
+        ] );
+
         // Register Hero Block
         register_block_type( 'academia-lms/hero', [
             'editor_script' => 'academia-blocks-editor',
@@ -59,8 +66,8 @@ class Blocks {
     public static function enqueue_block_editor_assets() {
         wp_enqueue_script(
             'academia-blocks-editor',
-            ACADEMIA_LMS_URL . 'assets/admin/js/blocks.js',
-            [ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components' ],
+            ACADEMIA_LMS_URL . 'assets/blocks/js/blocks.js',
+            [ 'wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n' ],
             ACADEMIA_LMS_VERSION,
             true
         );
@@ -79,7 +86,7 @@ class Blocks {
     public static function enqueue_block_frontend_assets() {
         wp_enqueue_style(
             'academia-blocks-style',
-            ACADEMIA_LMS_URL . 'assets/frontend/css/blocks.css',
+            ACADEMIA_LMS_URL . 'assets/blocks/css/style.css',
             [],
             ACADEMIA_LMS_VERSION
         );
