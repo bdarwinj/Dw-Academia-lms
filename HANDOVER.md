@@ -540,3 +540,23 @@ Este archivo sirve como el historial principal del proyecto, documentando las de
 
 ### Git Backup:
 - **Hash/Commit:** Finalizada Phase 8.2: CRUD y Gestión de Matrículas en React.
+
+---
+
+## [2026-03-02] - Expansión de Pestaña General y Fixes de UI (Phase 13)
+
+### Estado Actual:
+- **Actividad:** Completado de la pestaña 'General' del ajuste de cursos, reparación de interacciones en grillas y planificación del Frontend nativo.
+- **Fase:** Settings Avanzados (Phase 13) - COMPLETADA / Preparación Frontend (Phase 14)
+
+### Acciones Realizadas:
+1.  **Pestaña General Reestructurada (`CourseEditor.jsx`):** 
+    - Rediseño completo para replicar la experiencia de Masteriyo. División en "Course Basics" (Instructor, Dificultad, Duración, Insignia) y "Access & Restrictions" (Límite estudiantes, Conteo Estático, Contraseña pública, Rehacer curso).
+2.  **Acciones en Grillas (`Courses.jsx`):**
+    - Funcionalidad real en botones de listado de cursos. "Ver Curso" enlaza al frontend, "Editar" entra al SPA Builder y "Eliminar" pide confirmación y destruye el registro vía API.
+3.  **Planificación Fase 14 (Frontend Experience):**
+    - Redacción y aprobación del `implementation_plan_frontend_phase14.md`.
+    - Decisión arquitectónica clave tomada: **Construir el Frontend con Bloques Nativos de Gutenberg (React)** para cero dependencias, alto rendimiento y futuro de FSE en WP.
+
+### Git Backup:
+- **Hash/Commit:** (Ver Git Log para commits: Expansión de Tab General y Reparación de Botones de Cursos).
